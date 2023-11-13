@@ -10,6 +10,8 @@ import UIKit
 
 extension NSMutableAttributedString {
     
+    // Updates the default text color in the attributed string.
+    // Available only on iOS 13 and later.
     func updateDefaultTextColor() {
         if #available(iOS 13.0, *) {
             beginEditing()
@@ -27,6 +29,7 @@ extension NSMutableAttributedString {
         }
     }
     
+    // Converts a UIColor to its corresponding hex string representation.
     func hexString(from color: UIColor) -> String? {
         guard let components = color.cgColor.components else {
             return nil
@@ -40,6 +43,7 @@ extension NSMutableAttributedString {
         )
     }
     
+    // Sets the font face for the entire attributed string.
     func setFontFace(with font: UIFont) {
         beginEditing()
         enumerateAttribute(.font, in: NSRange(location: 0, length: self.length), options: []) { value, range, stop in
@@ -54,6 +58,7 @@ extension NSMutableAttributedString {
         endEditing()
     }
     
+    // Trims leading and trailing whitespaces and newlines from the attributed string.
     func trimWhiteSpace() {
         let legalChars = CharacterSet.whitespacesAndNewlines.inverted
         if let startRange = self.string.rangeOfCharacter(from: legalChars),

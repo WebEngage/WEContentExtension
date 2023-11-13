@@ -10,6 +10,7 @@ import UIKit
 
 extension WEXCarouselPushNotificationViewController{
     
+    /// Initializes the view hierarchy with a Carousel Layout.
     func initialiseCarouselForNotification(_ notification: UNNotification) {
         if notification.request.content.userInfo[WEConstants.SOURCE] as? String == WEConstants.WEBENGAGE {
             initialiseViewContainers()
@@ -196,6 +197,7 @@ extension WEXCarouselPushNotificationViewController{
         }
     }
     
+    /// Initializes the view hierarchy and adding a wrapper view and rich content labels container.
     func initialiseViewContainers() {
         self.viewContainers = [UIView](repeating: UIView(), count: 4)
         self.imageViews = [UIImageView](repeating: UIImageView(), count: 4)
@@ -216,6 +218,7 @@ extension WEXCarouselPushNotificationViewController{
         self.nextViewIndexToReturn = 0
     }
     
+    /// Get the frame size from the Image.
     func getImageFrameSize() -> CGSize {
         let mainViewToSuperViewWidthRatio = MAIN_VIEW_TO_SUPER_VIEW_WIDTH_RATIO
         let verticalMargins = MAIN_VIEW_TO_SUPER_VIEW_VERTICAL_MARGINS
@@ -245,6 +248,7 @@ extension WEXCarouselPushNotificationViewController{
         return CGSize(width: Double(viewWidth), height: Double(viewHeight))
     }
     
+    /// Render the animation on click of next Image..
     func renderAnimated(_ notification: UNNotification) {
         if notification.request.content.userInfo[WEConstants.SOURCE] as? String == WEConstants.WEBENGAGE {
             if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String : Any], let mode = expandableDetails[WEConstants.MODE] as? String {

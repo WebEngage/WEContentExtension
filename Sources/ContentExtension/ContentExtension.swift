@@ -89,7 +89,9 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         }
     }
 
-
+    /// - Parameters:
+    ///  - style: The style of the notification.
+    ///  - Returns: An instance of WEXRichPushLayout corresponding to the specified style.
     func layoutForStyle(_ style: String) -> WEXRichPushLayout? {
         switch style {
         case WEConstants.CAROUSEL:
@@ -111,12 +113,13 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         }
     }
 
-
+    // Overrides the traitCollectionDidChange method to update the dark mode status.
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         updateDarkModeStatus()
     }
-
+    
+    // Returns an activity dictionary for the current notification.
     func getActivityDictionaryForCurrentNotification() -> NSMutableDictionary {
         guard let expId = notification?.request.content.userInfo[WEConstants.EXPERIMENT_ID] as? String,
               let notifId = notification?.request.content.userInfo[WEConstants.NOTIFICATION_ID] as? String else {
@@ -139,6 +142,9 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         return dictionary
     }
 
+    /// - Parameters:
+      ///   - object: The value to be set for the specified key in the activity dictionary.
+      ///   - key: The key under which to store the value in the activity dictionary.
     func updateActivity(object: Any, forKey key: String) {
         if let activityDictionary = getActivityDictionaryForCurrentNotification() as? [String: Any] {
             var updatedActivityDictionary = activityDictionary
@@ -146,7 +152,8 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
             setActivityForCurrentNotification(activity: updatedActivityDictionary)
         }
     }
-
+    /// - Parameters:
+    ///   - activity: The activity dictionary to be set for the current notification.
     func setActivityForCurrentNotification(activity: [String: Any]) {
         guard let expId = notification?.request.content.userInfo[WEConstants.EXPERIMENT_ID] as? String,
               let notifId = notification?.request.content.userInfo[WEConstants.NOTIFICATION_ID] as? String else {
@@ -157,11 +164,19 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         richPushDefaults?.set(activity, forKey: finalNotifId)
         richPushDefaults?.synchronize()
     }
-
+    /// - Parameters:
+    ///   - eventName: The name of the system event.
+    ///   - systemData: The system-specific data for the system event.
+    ///   - applicationData: The application-specific data for the system event.
     func addSystemEvent(name eventName: String, systemData: [String: Any], applicationData: [String: Any]) {
         addEvent(name: eventName, systemData: systemData, applicationData: applicationData, category: WEConstants.SYSTEM)
     }
-
+    
+    /// - Parameters:
+    ///   - eventName: The name of the event.
+    ///   - systemData: The system-specific data for the event.
+    ///   - applicationData: The application-specific data for the event.
+    ///   - category: The category of the event.
     func addEvent(name eventName: String, systemData: [String: Any], applicationData: [String: Any], category: String) {
         let customData = notification?.request.content.userInfo[WEConstants.CUSTOM_DATA] as? [Any]
         var customDataDictionary = [String: Any]()
@@ -185,11 +200,17 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         }
     }
 
+    /// - Parameters:
+    ///   - ctaId: The ID of the Call to Action (CTA).
+    ///   - actionLink: The action link associated with the CTA.
     func setCTAWithId(_ ctaId: String, andLink actionLink: String) {
         let cta = ["id": ctaId, "actionLink": actionLink]
         updateActivity(object: cta, forKey: "cta")
     }
 
+    /// - Parameters:
+    ///   - text: The text for which the natural text alignment is to be determined.
+    /// Returns: The natural text alignment (left, right, or center).
     func naturalTextAligmentForText(_ text: String?) -> NSTextAlignment {
         guard let text = text, !text.isEmpty else {
             return .left
@@ -207,7 +228,12 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         }
         return .center
     }
-
+    
+    /// -  Parameters:
+    ///   - textString: The HTML text string to be parsed.
+    ///   - isTitle: A flag indicating whether the text is a title.
+    ///   - bckColor: The background color associated with the text.
+    /// Returns: An NSAttributedString representing the parsed HTML text.
     func getHtmlParsedString(_ textString: String, isTitle: Bool, bckColor: String) -> NSAttributedString? {
         let containsHTML = WEXCoreUtils.containsHTML(textString)
         var inputString = textString
@@ -260,6 +286,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         return attributedString
     }
 
+    // Updates the dark mode status based on the current trait collection.
     func updateDarkModeStatus() {
         if #available(iOS 12.0, *) {
             if traitCollection.userInterfaceStyle == .dark {

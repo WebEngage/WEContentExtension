@@ -9,6 +9,7 @@ import Foundation
 
 struct WEXCoreUtils {
     
+    // Returns a DateFormatter configured with a specific date format, UTC time zone, and GB locale.
     static func getDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -17,6 +18,7 @@ struct WEXCoreUtils {
         return formatter
     }
     
+    // Retrieves and returns the shared UserDefaults instance based on the app group configuration.
     static func getSharedUserDefaults() -> UserDefaults? {
         var appGroup = Bundle.main.object(forInfoDictionaryKey: WEConstants.WEX_APP_GROUP) as? String
 
@@ -37,10 +39,12 @@ struct WEXCoreUtils {
         }
     }
     
+    // Checks if a given string contains HTML tags using regular expressions.
     static func containsHTML(_ value: String) -> Bool {
         return value.range(of: "<(\"[^\"]*\"|'[^']*'|[^'\">])*>", options: .regularExpression) != nil
     }
     
+    // Sets default values in the shared UserDefaults for the app extension.
     static func setExtensionDefaults() {
         if let sharedDefaults = getSharedUserDefaults() {
             if sharedDefaults.value(forKey: WEConstants.WEX_CONTENT_EXTENSION_VERSION_STRING) == nil {

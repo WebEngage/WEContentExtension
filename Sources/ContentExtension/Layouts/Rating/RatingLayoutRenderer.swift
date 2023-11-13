@@ -10,6 +10,7 @@ import UIKit
 
 extension WEXRatingPushNotificationViewController{
     
+    /// Initializes the view hierarchy for displaying a notification with rich content and optional banner image.
     func initialiseViewHierarchy() {
         if #available(iOS 13.0, *) {
             self.view?.backgroundColor = UIColor.WEXWhiteColor()

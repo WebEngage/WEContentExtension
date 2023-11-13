@@ -25,6 +25,7 @@ class WEXBannerPushNotificationViewController: WEXRichPushLayout {
         }
     }
 
+    /// Initializes the view hierarchy by setting the background color (if available) and adding a wrapper view and rich content labels container.
     func initialiseViewHierarchy() {
         if #available(iOS 13.0, *) {
             view?.backgroundColor = UIColor.WEXWhiteColor()

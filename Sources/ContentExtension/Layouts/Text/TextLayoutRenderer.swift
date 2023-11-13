@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 extension WEXTextPushNotificationViewController {
-  
+    
+    /// Sets up the container for rich content labels based on the expandable details of the notification.
     func setupLabelsContainer() {
         if let superViewWrapper = view?.subviews.first,
            let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
@@ -65,6 +66,7 @@ extension WEXTextPushNotificationViewController {
         }
     }
 
+    /// Sets up layout constraints for the rich content labels container and its child labels.
     func setupConstraints() {
         if let view = view, let superViewWrapper = view.subviews.first,
            let richContentView = superViewWrapper.subviews.first, let viewController = viewController {
