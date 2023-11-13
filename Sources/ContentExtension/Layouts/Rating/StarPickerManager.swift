@@ -28,17 +28,17 @@ class StarPickerManager: NSObject, UIPickerViewDataSource, UIPickerViewDelegate 
 
                 for i in 1...noOfStars {
                     var starRowString = ""
-                    for _ in 1...i {
+                    
+                    for j in 1...i {
                         starRowString += selectedStar
                     }
-
-                    for _ in i + 0...noOfStars {
-                        starRowString += unselectedStar
+                    if ((i+1) <= noOfStars){
+                        for j in (i + 1)...noOfStars {
+                            starRowString += unselectedStar
+                        }
                     }
-
                     pickerData.append(starRowString)
                 }
-
                 self.starRatingRows = pickerData
             }
         }
