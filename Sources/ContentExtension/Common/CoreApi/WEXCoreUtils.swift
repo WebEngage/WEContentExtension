@@ -18,29 +18,37 @@ struct WEXCoreUtils {
     }
     
     static func getSharedUserDefaults() -> UserDefaults? {
-        var appGroup = Bundle.main.object(forInfoDictionaryKey: "WEX_APP_GROUP") as? String
-        
+        var appGroup = Bundle.main.object(forInfoDictionaryKey: WEConstants.WEX_APP_GROUP) as? String
+
         if appGroup == nil {
             var bundle = Bundle.main
-            
-            if bundle.bundleURL.pathExtension == "appex" {
+            if bundle.bundleURL.pathExtension == WEConstants.APPEX {
                 bundle = Bundle(url: bundle.bundleURL.deletingLastPathComponent().deletingLastPathComponent())!
             }
-            
-            let bundleIdentifier = bundle.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String
-            
-            appGroup = "group.\(bundleIdentifier ?? "").WEGNotificationGroup"
+            let bundleIdentifier = bundle.object(forInfoDictionaryKey: WEConstants.CFBUNDLEIDENTIFIER) as? String
+            appGroup = "\(WEConstants.GROUP).\(bundleIdentifier ?? "").\(WEConstants.WENOTIFICATIONGROUP)"
         }
-        
-        if let appGroup = appGroup {
-            if let defaults = UserDefaults(suiteName: appGroup) {
-                return defaults
-            } else {
-                print("Shared User Defaults could not be initialized. Ensure Shared App Groups have been enabled on Main App & Notification Content Extension Targets.")
+
+        if let defaults = UserDefaults(suiteName: appGroup) {
+            return defaults
+        } else {
+            print("Shared User Defaults could not be initialized. Ensure Shared App Groups have been enabled on Main App & Notification Service Extension Targets.")
+            fatalError("Shared User Defaults initialization failed.")
+        }
+    }
+    
+    static func containsHTML(_ value: String) -> Bool {
+        return value.range(of: "<(\"[^\"]*\"|'[^']*'|[^'\">])*>", options: .regularExpression) != nil
+    }
+    
+    static func setExtensionDefaults() {
+        if let sharedDefaults = getSharedUserDefaults() {
+            if sharedDefaults.value(forKey: WEConstants.WEX_CONTENT_EXTENSION_VERSION_STRING) == nil {
+                sharedDefaults.setValue(WEConstants.WEX_CONTENT_EXTENSION_VERSION, forKey: WEConstants.WEX_CONTENT_EXTENSION_VERSION_STRING)
+                sharedDefaults.synchronize()
             }
         }
-        
-        return nil
     }
 }
+
 

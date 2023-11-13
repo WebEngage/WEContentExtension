@@ -2,8 +2,6 @@ import UserNotifications
 import UserNotificationsUI
 import UIKit
 
-let WEX_CONTENT_EXTENSION_VERSION = "1.0.2"
-
 @available(iOS 10.0, *)
 open class WEXRichPushNotificationViewController: UIViewController,UNNotificationContentExtension {
 
@@ -28,7 +26,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
 
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        updateActivity(object: true, forKey: "collapsed")
+        updateActivity(object: true, forKey: WEConstants.COLLAPSED)
         DispatchQueue.main.async {
             self.label?.removeFromSuperview()
             self.currentLayout = nil
@@ -63,71 +61,44 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     }
 
     public func didReceive(_ notification: UNNotification) {
-        if notification.request.content.userInfo["source"] as? String == "webengage" {
+        if notification.request.content.userInfo[WEConstants.SOURCE] as? String == WEConstants.WEBENGAGE {
             self.notification = notification
             isRendering = true
             updateDarkModeStatus()
-            setExtensionDefaults()
-            var appGroup = Bundle.main.object(forInfoDictionaryKey: "WEX_APP_GROUP") as? String
+            WEXCoreUtils.setExtensionDefaults()
+            var appGroup = Bundle.main.object(forInfoDictionaryKey: WEConstants.WEX_APP_GROUP) as? String
 
             if appGroup == nil {
                 var bundle = Bundle.main
-                if bundle.bundleURL.pathExtension == "appex" {
+                if bundle.bundleURL.pathExtension == WEConstants.APPEX {
                     bundle = Bundle(url: bundle.bundleURL.deletingLastPathComponent().deletingLastPathComponent())!
                 }
-                let bundleIdentifier = bundle.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String
-                appGroup = "group.\(bundleIdentifier ?? "").WEGNotificationGroup"
+                let bundleIdentifier = bundle.object(forInfoDictionaryKey: WEConstants.CFBUNDLEIDENTIFIER) as? String
+                appGroup = "\(WEConstants.GROUP).\(bundleIdentifier ?? "").\(WEConstants.WENOTIFICATIONGROUP)"
             }
 
             richPushDefaults = UserDefaults(suiteName: appGroup)
 
-            updateActivity(object: false, forKey: "collapsed")
-            updateActivity(object: true, forKey: "expanded")
+            updateActivity(object: false, forKey: WEConstants.COLLAPSED)
+            updateActivity(object: true, forKey: WEConstants.EXPANDED)
 
-            if let expandableDetails = notification.request.content.userInfo["expandableDetails"] as? [String: Any], let style = expandableDetails["style"] as? String {
+            if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let style = expandableDetails[WEConstants.STYLE] as? String {
                 currentLayout = layoutForStyle(style)
                 currentLayout?.didReceiveNotification(notification)
             }
         }
     }
 
-    func setExtensionDefaults() {
-        let sharedDefaults = getSharedUserDefaults()
-        if sharedDefaults.value(forKey: "WEG_Content_Extension_Version") == nil {
-            sharedDefaults.setValue(WEX_CONTENT_EXTENSION_VERSION, forKey: "WEG_Content_Extension_Version")
-            sharedDefaults.synchronize()
-        }
-    }
-
-    func getSharedUserDefaults() -> UserDefaults {
-        var appGroup = Bundle.main.object(forInfoDictionaryKey: "WEX_APP_GROUP") as? String
-
-        if appGroup == nil {
-            var bundle = Bundle.main
-            if bundle.bundleURL.pathExtension == "appex" {
-                bundle = Bundle(url: bundle.bundleURL.deletingLastPathComponent().deletingLastPathComponent())!
-            }
-            let bundleIdentifier = bundle.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String
-            appGroup = "group.\(bundleIdentifier ?? "").WEGNotificationGroup"
-        }
-
-        if let defaults = UserDefaults(suiteName: appGroup) {
-            return defaults
-        } else {
-            print("Shared User Defaults could not be initialized. Ensure Shared App Groups have been enabled on Main App & Notification Service Extension Targets.")
-            fatalError("Shared User Defaults initialization failed.")
-        }
-    }
 
     func layoutForStyle(_ style: String) -> WEXRichPushLayout? {
         switch style {
-        case "CAROUSEL_V1":
+        case WEConstants.CAROUSEL:
             return WEXCarouselPushNotificationViewController(notificationViewController: self)
-        case "RATING_V1":
+        case WEConstants.RATING:
             return WEXRatingPushNotificationViewController(notificationViewController: self)
-        case "BIG_PICTURE":
+        case WEConstants.BIG_PICTURE:
             return WEXBannerPushNotificationViewController(notificationViewController: self)
-        case "BIG_TEXT":
+        case WEConstants.BIG_TEXT:
             return WEXTextPushNotificationViewController(notificationViewController: self)
         default:
             return nil
@@ -135,7 +106,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     }
 
     public func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
-        if let source = response.notification.request.content.userInfo["source"] as? String, source == "webengage" {
+        if let source = response.notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             self.currentLayout?.didReceiveNotificationResponse(response, completionHandler: completion)
         }
     }
@@ -147,22 +118,22 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     }
 
     func getActivityDictionaryForCurrentNotification() -> NSMutableDictionary {
-        guard let expId = notification?.request.content.userInfo["experiment_id"] as? String,
-              let notifId = notification?.request.content.userInfo["notification_id"] as? String else {
+        guard let expId = notification?.request.content.userInfo[WEConstants.EXPERIMENT_ID] as? String,
+              let notifId = notification?.request.content.userInfo[WEConstants.NOTIFICATION_ID] as? String else {
             return NSMutableDictionary()
         }
 
         let finalNotifId = "\(expId)|\(notifId)"
-        let expandableDetails = notification?.request.content.userInfo["expandableDetails"]
-        let customData = notification?.request.content.userInfo["customData"] as? [Any]
+        let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS]
+        let customData = notification?.request.content.userInfo[WEConstants.CUSTOM_DATA] as? [Any]
 
         var dictionary = (richPushDefaults?.dictionary(forKey: finalNotifId) as? NSMutableDictionary) ?? NSMutableDictionary()
         if dictionary.count == 0 {
-            dictionary["experiment_id"] = expId
-            dictionary["notification_id"] = notifId
-            dictionary["expandableDetails"] = expandableDetails
+            dictionary[WEConstants.EXPERIMENT_ID] = expId
+            dictionary[WEConstants.NOTIFICATION_ID] = notifId
+            dictionary[WEConstants.EXPANDABLEDETAILS] = expandableDetails
             if let customData = customData {
-                dictionary["customData"] = customData
+                dictionary[WEConstants.CUSTOM_DATA] = customData
             }
         }
         return dictionary
@@ -177,8 +148,8 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     }
 
     func setActivityForCurrentNotification(activity: [String: Any]) {
-        guard let expId = notification?.request.content.userInfo["experiment_id"] as? String,
-              let notifId = notification?.request.content.userInfo["notification_id"] as? String else {
+        guard let expId = notification?.request.content.userInfo[WEConstants.EXPERIMENT_ID] as? String,
+              let notifId = notification?.request.content.userInfo[WEConstants.NOTIFICATION_ID] as? String else {
             return
         }
 
@@ -188,11 +159,11 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     }
 
     func addSystemEvent(name eventName: String, systemData: [String: Any], applicationData: [String: Any]) {
-        addEvent(name: eventName, systemData: systemData, applicationData: applicationData, category: "system")
+        addEvent(name: eventName, systemData: systemData, applicationData: applicationData, category: WEConstants.SYSTEM)
     }
 
     func addEvent(name eventName: String, systemData: [String: Any], applicationData: [String: Any], category: String) {
-        let customData = notification?.request.content.userInfo["customData"] as? [Any]
+        let customData = notification?.request.content.userInfo[WEConstants.CUSTOM_DATA] as? [Any]
         var customDataDictionary = [String: Any]()
 
         if let customData = customData as? [[String: Any]] {
@@ -204,10 +175,10 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
             }
         }
 
-        if category == "system" {
+        if category == WEConstants.SYSTEM {
             WEXAnalytics.trackEvent(withName: "we_\(eventName)", andValue: [
-                "system_data_overrides": systemData,
-                "event_data_overrides": customDataDictionary
+                WEConstants.SYSTEM_DATA_OVERRIDES: systemData,
+                WEConstants.EVENT_DATA_OVERRIDES: customDataDictionary
             ])
         } else {
             WEXAnalytics.trackEvent(withName: eventName, andValue: customDataDictionary)
@@ -238,7 +209,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     }
 
     func getHtmlParsedString(_ textString: String, isTitle: Bool, bckColor: String) -> NSAttributedString? {
-        let containsHTML = self.containsHTML(textString)
+        let containsHTML = WEXCoreUtils.containsHTML(textString)
         var inputString = textString
 
         if containsHTML && isTitle {
@@ -287,10 +258,6 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         }
 
         return attributedString
-    }
-
-    func containsHTML(_ value: String) -> Bool {
-        return value.range(of: "<(\"[^\"]*\"|'[^']*'|[^'\">])*>", options: .regularExpression) != nil
     }
 
     func updateDarkModeStatus() {

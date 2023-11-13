@@ -11,19 +11,16 @@ import UserNotificationsUI
 class WEXBannerPushNotificationViewController: WEXRichPushLayout {
 
     var notification: UNNotification?
-    let CONTENT_PADDING = 10.0
-    let LANDSCAPE_ASPECT = 0.5
-    let TITLE_BODY_SPACE = 5
 
     override func didReceiveNotification(_ notification: UNNotification) {
-        if let source = notification.request.content.userInfo["source"] as? String, source == "webengage" {
+        if let source = notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             self.notification = notification
             initialiseViewHierarchy()
         }
     }
 
     override func didReceiveNotificationResponse(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
-        if let source = response.notification.request.content.userInfo["source"] as? String, source == "webengage" {
+        if let source = response.notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             completion(.dismissAndForwardAction)
         }
     }
@@ -47,9 +44,9 @@ class WEXBannerPushNotificationViewController: WEXRichPushLayout {
             return
         }
         
-        if let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any] {
+        if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any] {
             let imageView = UIImageView()
-            if let image = expandableDetails["image"] as? String, let attachment = notification?.request.content.attachments.first {
+            if let image = expandableDetails[WEConstants.IMAGE] as? String, let attachment = notification?.request.content.attachments.first {
                 if #available(iOS 10.0, *){
                     if let imageData = try? Data(contentsOf: attachment.url), let image = UIImage(data: imageData) {
                         imageView.image = image
@@ -60,29 +57,29 @@ class WEXBannerPushNotificationViewController: WEXRichPushLayout {
                     print("Expected to be running iOS version 10 or above")
                 }
             } else {
-                print("Attachment not present for: \(expandableDetails["image"] ?? "")")
+                print("Attachment not present for: \(expandableDetails[WEConstants.IMAGE] ?? "")")
             }
             
             imageView.contentMode = .scaleAspectFill
             mainContentView.addSubview(imageView)
             setupLabelsContainer()
         } else {
-            print("Image not present in payload: \(notification?.request.content.userInfo["expandableDetails"])")
+            print("Image not present in payload: \(notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS])")
         }
     }
 
     func setupLabelsContainer() {
         if let superViewWrapper = view?.subviews.first,
-            let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any], let colorHex = expandableDetails["bckColor"] as? String{
+           let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
             let richContentView = UIView()
             if #available(iOS 13.0, *) {
                 richContentView.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXWhiteColor())
             }
 
-            if let expandedDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any]{
-                let title = expandedDetails["rt"] as? String
-                let subtitle = expandedDetails["rst"] as? String
-                let message = expandedDetails["rm"] as? String
+            if let expandedDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]{
+                let title = expandedDetails[WEConstants.RICHTITLE] as? String
+                let subtitle = expandedDetails[WEConstants.RICHSUBTITLE] as? String
+                let message = expandedDetails[WEConstants.RICHMESSAGE] as? String
                 var titlePresent = title != ""
                 var subTitlePresent = subtitle != ""
                 var messagePresent = message != ""
@@ -149,7 +146,7 @@ class WEXBannerPushNotificationViewController: WEXRichPushLayout {
             if let imageView = mainContentView.subviews.first as? UIImageView {
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 if let bannerImage = imageView.image {
-                    var imageAspect: CGFloat = LANDSCAPE_ASPECT
+                    var imageAspect: CGFloat = CGFloat(WEConstants.LANDSCAPE_ASPECT)
                     if bannerImage.size.height != 0 {
                         imageAspect = bannerImage.size.height / bannerImage.size.width
                     }
@@ -163,20 +160,20 @@ class WEXBannerPushNotificationViewController: WEXRichPushLayout {
                 
                 if let richTitleLabel = richContentView.subviews[0] as? UILabel, let richSubTitleLabel = richContentView.subviews[1] as? UILabel, let richBodyLabel = richContentView.subviews[2] as? UILabel {
                     richTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-                    richTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                    richTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - CONTENT_PADDING).isActive = true
-                    richTitleLabel.topAnchor.constraint(equalTo: richContentView.topAnchor, constant: CONTENT_PADDING).isActive = true
+                    richTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                    richTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - WEConstants.CONTENT_PADDING).isActive = true
+                    richTitleLabel.topAnchor.constraint(equalTo: richContentView.topAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
                     
                     richSubTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-                    richSubTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                    richSubTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - CONTENT_PADDING).isActive = true
+                    richSubTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                    richSubTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - WEConstants.CONTENT_PADDING).isActive = true
                     richSubTitleLabel.topAnchor.constraint(equalTo: richTitleLabel.bottomAnchor).isActive = true
                     
                     richBodyLabel.translatesAutoresizingMaskIntoConstraints = false
-                    richBodyLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                    richBodyLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - CONTENT_PADDING).isActive = true
+                    richBodyLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                    richBodyLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - WEConstants.CONTENT_PADDING).isActive = true
                     richBodyLabel.topAnchor.constraint(equalTo: richSubTitleLabel.bottomAnchor).isActive = true
-                    richBodyLabel.bottomAnchor.constraint(equalTo: richContentView.bottomAnchor, constant: -CONTENT_PADDING).isActive = true
+                    richBodyLabel.bottomAnchor.constraint(equalTo: richContentView.bottomAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
                 }
             } else {
                 print("Expected to be running iOS version 10 or above")

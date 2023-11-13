@@ -25,9 +25,6 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
     let WEX_RATING_SUBMITTED_EVENT_NAME = "push_notification_rating_submitted"
     let MAX_DESCRIPTION_LINE_COUNT = 3
     let TEXT_PADDING: CGFloat = 10
-    let CONTENT_PADDING: CGFloat = 10
-    let TITLE_BODY_SPACE: CGFloat = 5
-    let WHITECOLOR = "#FFFFFF"
     
     func initialiseViewHierarchy() {
         if #available(iOS 13.0, *) {
@@ -40,11 +37,11 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
         let mainContentView = UIView()
         superViewWrapper.addSubview(mainContentView)
 
-        let expandableDetails = self.notification?.request.content.userInfo["expandableDetails"] as? [String: Any]
+        let expandableDetails = self.notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]
 
         var backgroundImage = false
 
-        if let image = expandableDetails?["image"] as? String,
+        if let image = expandableDetails?[WEConstants.IMAGE] as? String,
            let attachments = self.notification?.request.content.attachments,
            attachments.count > 0 {
                 if let attachment = attachments.first,
@@ -150,9 +147,9 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
         }
         superViewWrapper.addSubview(contentSeparator)
 
-        var richTitle = expandableDetails?["rt"] as? String
-        var richSub = expandableDetails?["rst"] as? String
-        var richMessage = expandableDetails?["rm"] as? String
+        var richTitle = expandableDetails?[WEConstants.RICHTITLE] as? String
+        var richSub = expandableDetails?[WEConstants.RICHSUBTITLE] as? String
+        var richMessage = expandableDetails?[WEConstants.RICHMESSAGE] as? String
 
         var isRichTitle = false, isRichSubtitle = false, isRichMessage = false
 
@@ -176,24 +173,24 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
             richMessage = self.notification?.request.content.body
         }
 
-        let colorHex = expandableDetails?["bckColor"] as? String
+        let colorHex = expandableDetails?[WEConstants.BLACKCOLOR] as? String
 
         // Add a notification content view for displaying title and body.
         let richContentView = UIView()
         if #available(iOS 13.0, *) {
-            richContentView.backgroundColor = UIColor.colorFromHexString(colorHex ?? WHITECOLOR, defaultColor: .WEXWhiteColor())
+            richContentView.backgroundColor = UIColor.colorFromHexString(colorHex ?? WEConstants.WHITECOLOR, defaultColor: .WEXWhiteColor())
         }
 
         let richTitleLabel = UILabel()
         if let richTitle = richTitle{
-            richTitleLabel.attributedText = self.viewController?.getHtmlParsedString(richTitle, isTitle: true, bckColor: colorHex ?? WHITECOLOR)
+            richTitleLabel.attributedText = self.viewController?.getHtmlParsedString(richTitle, isTitle: true, bckColor: colorHex ?? WEConstants.WHITECOLOR)
             if let alignment = self.viewController?.naturalTextAligmentForText(richTitleLabel.text){
                 richTitleLabel.textAlignment = alignment
             }
         }
         let richSubLabel = UILabel()
         if let richSub = richSub {
-            richSubLabel.attributedText = self.viewController?.getHtmlParsedString(richSub, isTitle: true, bckColor: colorHex ?? WHITECOLOR)
+            richSubLabel.attributedText = self.viewController?.getHtmlParsedString(richSub, isTitle: true, bckColor: colorHex ?? WEConstants.WHITECOLOR)
             if let alignment = self.viewController?.naturalTextAligmentForText(richSubLabel.text){
                 richSubLabel.textAlignment = alignment
             }
@@ -201,7 +198,7 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
 
         let richBodyLabel = UILabel()
         if let richMessage = richMessage {
-            richBodyLabel.attributedText = self.viewController?.getHtmlParsedString(richMessage, isTitle: false, bckColor: colorHex ?? WHITECOLOR)
+            richBodyLabel.attributedText = self.viewController?.getHtmlParsedString(richMessage, isTitle: false, bckColor: colorHex ?? WEConstants.WHITECOLOR)
             if let alignment = self.viewController?.naturalTextAligmentForText( richBodyLabel.text){
                 richBodyLabel.textAlignment = alignment
                 richBodyLabel.numberOfLines = 0
@@ -215,13 +212,13 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
 
         let separator = UIView()
         if #available(iOS 13.0, *) {
-            separator.backgroundColor = UIColor.colorFromHexString(colorHex ?? WHITECOLOR, defaultColor: .WEXGreyColor())
+            separator.backgroundColor = UIColor.colorFromHexString(colorHex ?? WEConstants.WHITECOLOR, defaultColor: .WEXGreyColor())
         }
         superViewWrapper.addSubview(separator)
 
         let starRatingView = UIView()
         if #available(iOS 13.0, *) {
-            starRatingView.backgroundColor = UIColor.colorFromHexString(colorHex ?? WHITECOLOR, defaultColor: .WEXWhiteColor())
+            starRatingView.backgroundColor = UIColor.colorFromHexString(colorHex ?? WEConstants.WHITECOLOR, defaultColor: .WEXWhiteColor())
         }
 
         self.labelsWrapper = UIView()
@@ -245,7 +242,7 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
 
     func renderStarControl() {
         let selectedCount = self.selectedCount
-        if let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String : Any], let totalCount =  expandableDetails["ratingScale"] as? Int {
+        if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String : Any], let totalCount =  expandableDetails[WEConstants.RATING_SCALE] as? Int {
             self.selectedLabel?.textAlignment = NSTextAlignment.natural
             
             let starChar: Character = "\u{2605}"
@@ -396,20 +393,20 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
             let richBodyLabel = richContentView.subviews[2]
             
             richTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-            richTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-            richTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - CONTENT_PADDING).isActive = true
-            richTitleLabel.topAnchor.constraint(equalTo: richContentView.topAnchor, constant: CONTENT_PADDING).isActive = true
+            richTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+            richTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - WEConstants.CONTENT_PADDING).isActive = true
+            richTitleLabel.topAnchor.constraint(equalTo: richContentView.topAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
             
             richSubTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-            richSubTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-            richSubTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - CONTENT_PADDING).isActive = true
+            richSubTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+            richSubTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - WEConstants.CONTENT_PADDING).isActive = true
             richSubTitleLabel.topAnchor.constraint(equalTo: richTitleLabel.bottomAnchor, constant: 0).isActive = true
             
             richBodyLabel.translatesAutoresizingMaskIntoConstraints = false
-            richBodyLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-            richBodyLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - CONTENT_PADDING).isActive = true
+            richBodyLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+            richBodyLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: 0 - WEConstants.CONTENT_PADDING).isActive = true
             richBodyLabel.topAnchor.constraint(equalTo: richSubTitleLabel.bottomAnchor, constant: 0).isActive = true
-            richBodyLabel.bottomAnchor.constraint(equalTo: richContentView.bottomAnchor, constant: -CONTENT_PADDING).isActive = true
+            richBodyLabel.bottomAnchor.constraint(equalTo: richContentView.bottomAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
             
             // Star rating view internal constraints
             if let labelsWrapper = self.labelsWrapper, let superview = labelsWrapper.superview, let selectedLabel = self.selectedLabel, let unselectedLabel = self.unselectedLabel{
@@ -480,7 +477,7 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
     
     override func didReceiveNotification(_ notification: UNNotification) {
         if let userInfo = notification.request.content.userInfo as? [String: Any],
-           let source = userInfo["source"] as? String, source == "webengage" {
+           let source = userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             self.notification = notification
             initialiseViewHierarchy()
             
@@ -492,15 +489,15 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
             self.pickerView?.dataSource = self.pickerManager
             self.pickerView?.delegate = self.pickerManager
             
-            if let noOfStars = userInfo["expandableDetails"] as? [String: Any]?,
-               let ratingScale = noOfStars?["ratingScale"] as? Int {
+            if let noOfStars = userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]?,
+               let ratingScale = noOfStars?[WEConstants.RATING_SCALE] as? Int {
                 self.pickerView?.selectRow(ratingScale / 2, inComponent: 0, animated: false)
             }
         }
     }
     
     override func didReceiveNotificationResponse(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
-        if let source = response.notification.request.content.userInfo["source"] as? String, source == "webengage" {
+        if let source = response.notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             
             var completionOption: UNNotificationContentExtensionResponseOption = .doNotDismiss
             
@@ -509,18 +506,18 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
             } else if response.actionIdentifier == "WEG_SUBMIT_RATING" {
                 if selectedCount > 0 {
                     if let userInfo = notification?.request.content.userInfo as? [String: Any],
-                       let expandableDetails = userInfo["expandableDetails"] as? [String: Any],
-                       let expId = userInfo["experiment_id"] as? String,
-                       let notifId = userInfo["notification_id"] as? String {
+                       let expandableDetails = userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any],
+                       let expId = userInfo[WEConstants.EXPERIMENT_ID] as? String,
+                       let notifId = userInfo[WEConstants.NOTIFICATION_ID] as? String {
                         
                         var systemData: [String: Any] = [
                             "id": notifId,
-                            "experiment_id": expId
+                            WEConstants.EXPERIMENT_ID: expId
                         ]
                         
-                        if let submitCTA = expandableDetails["submitCTA"] as? [String: Any],
+                        if let submitCTA = expandableDetails[WEConstants.SUBMIT_CTA] as? [String: Any],
                            let submitCTAId = submitCTA["id"] as? String,
-                           let submitCTALink = submitCTA["actionLink"] as? String {
+                           let submitCTALink = submitCTA[WEConstants.ACTION_LINK] as? String {
                             
                             systemData["call_to_action"] = submitCTAId
                             viewController?.setCTAWithId(submitCTAId, andLink: submitCTALink)

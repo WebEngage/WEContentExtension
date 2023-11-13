@@ -21,7 +21,7 @@ struct WEXAnalytics {
         if eventName.hasPrefix("we_") {
             trackInternalEvent(withName: String(eventName.dropFirst(3)), andValue: eventValue, asSystemEvent: true)
         } else {
-            trackInternalEvent(withName: eventName, andValue: ["event_data_overrides": eventValue ?? [:]], asSystemEvent: false)
+            trackInternalEvent(withName: eventName, andValue: [WEConstants.EVENT_DATA_OVERRIDES: eventValue ?? [:]], asSystemEvent: false)
         }
     }
     

@@ -12,23 +12,20 @@ import UserNotifications
 
 class WEXTextPushNotificationViewController: WEXRichPushLayout {
     var notification: UNNotification?
-    let CONTENT_PADDING = 10.0
-    let TITLE_BODY_SPACE = 5
-    let LANDSCAPE_ASPECT = 0.5
 
     override func didReceiveNotification(_ notification: UNNotification) {
-        if let source = notification.request.content.userInfo["source"] as? String, source == "webengage" {
+        if let source = notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             self.notification = notification
             initialiseViewHierarchy()
         }
     }
 
     override func didReceiveNotificationResponse(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
-        if let source = response.notification.request.content.userInfo["source"] as? String, source == "webengage" {
+        if let source = response.notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE{
             completion(.dismissAndForwardAction)
         }
     }
-
+    
     func initialiseViewHierarchy() {
         if #available(iOS 13.0, *) {
             view?.backgroundColor = UIColor.WEXWhiteColor()
@@ -37,19 +34,19 @@ class WEXTextPushNotificationViewController: WEXRichPushLayout {
         view?.addSubview(superViewWrapper)
         setupLabelsContainer()
     }
-
+    
     func setupLabelsContainer() {
         if let superViewWrapper = view?.subviews.first,
-            let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any], let colorHex = expandableDetails["bckColor"] as? String{
+           let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
             let richContentView = UIView()
             if #available(iOS 13.0, *) {
                 richContentView.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXWhiteColor())
             }
 
-            if let expandedDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any]{
-                let title = expandedDetails["rt"] as? String
-                let subtitle = expandedDetails["rst"] as? String
-                let message = expandedDetails["rm"] as? String
+            if let expandedDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]{
+                let title = expandedDetails[WEConstants.RICHTITLE] as? String
+                let subtitle = expandedDetails[WEConstants.RICHSUBTITLE] as? String
+                let message = expandedDetails[WEConstants.RICHMESSAGE] as? String
                 var titlePresent = title != ""
                 var subTitlePresent = subtitle != ""
                 var messagePresent = message != ""
@@ -116,20 +113,20 @@ class WEXTextPushNotificationViewController: WEXRichPushLayout {
                    let richBodyLabel = richContentView.subviews[2] as UIView
                     
                     richTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-                    richTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                    richTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: -CONTENT_PADDING).isActive = true
-                    richTitleLabel.topAnchor.constraint(equalTo: richContentView.topAnchor, constant: CONTENT_PADDING).isActive = true
+                    richTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                    richTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
+                    richTitleLabel.topAnchor.constraint(equalTo: richContentView.topAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
 
                     richSubTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-                    richSubTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                    richSubTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: -CONTENT_PADDING).isActive = true
+                    richSubTitleLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                    richSubTitleLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
                     richSubTitleLabel.topAnchor.constraint(equalTo: richTitleLabel.bottomAnchor, constant: 0).isActive = true
 
                     richBodyLabel.translatesAutoresizingMaskIntoConstraints = false
-                    richBodyLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                    richBodyLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: -CONTENT_PADDING).isActive = true
+                    richBodyLabel.leadingAnchor.constraint(equalTo: richContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                    richBodyLabel.trailingAnchor.constraint(equalTo: richContentView.trailingAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
                     richBodyLabel.topAnchor.constraint(equalTo: richSubTitleLabel.bottomAnchor, constant: 0).isActive = true
-                    richBodyLabel.bottomAnchor.constraint(equalTo: richContentView.bottomAnchor, constant: -CONTENT_PADDING).isActive = true
+                    richBodyLabel.bottomAnchor.constraint(equalTo: richContentView.bottomAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
         }
     }
 }

@@ -17,10 +17,10 @@ class StarPickerManager: NSObject, UIPickerViewDataSource, UIPickerViewDelegate 
     init(notification: UNNotification) {
         super.init()
 
-        if let source = notification.request.content.userInfo["source"] as? String, source == "webengage" {
+        if let source = notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             self.notification = notification
 
-            if let expandableDetails = notification.request.content.userInfo["expandableDetails"] as? [String: Any],let noOfStars = expandableDetails["ratingScale"] as? Int{
+            if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any],let noOfStars = expandableDetails[WEConstants.RATING_SCALE] as? Int{
                 let selectedStar = "⭐"
                 let unselectedStar = "☆"
 

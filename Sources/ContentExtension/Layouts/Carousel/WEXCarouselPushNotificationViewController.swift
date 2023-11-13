@@ -18,12 +18,8 @@ let DESCRIPTION_VIEW_ALPHA: CGFloat = 0.5
 let INTER_VIEW_MARGINS: Float = 10
 let SIDE_VIEWS_FADE_ALPHA: CGFloat = 0.75
 let SLIDE_ANIMATION_DURATION: TimeInterval = 0.5
-let LANDSCAPE_ASPECT: Float = 0.5
 let PORTRAIT_ASPECT: Float = 1.0
 let NOTIFICATION_CONTENT_BAR_HEIGHT: Float = 50.0
-let CONTENT_PADDING: CGFloat = 10
-let TITLE_BODY_SPACE: Float = 5
-let WHITECOLOR = "#FFFFFF"
 
 enum WEXCarouselFrameLocation: Int {
     case WEXPreviousLeft = -2
@@ -55,13 +51,13 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     var shouldScroll: Bool = false
     
     override func didReceiveNotification(_ notification: UNNotification) {
-        if let source = notification.request.content.userInfo["source"] as? String, source == "webengage" {
+        if let source = notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             isRendering = true
             self.notification = notification
             current = 0
             
-            if let expandedDetails = notification.request.content.userInfo["expandableDetails"] as? [String: Any] {
-                if let items = expandedDetails["items"] as? [[String: Any]], !items.isEmpty {
+            if let expandedDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any] {
+                if let items = expandedDetails[WEConstants.ITEMS] as? [[String: Any]], !items.isEmpty {
                     carouselItems = items
                     images = []
                     wasLoaded = []
@@ -70,7 +66,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                     var firstImageAdded = false
                     
                     if downloadedCount == 0 {
-                        if let carouselItem = carouselItems[0] as? [String: Any] ,let imageURL = carouselItem["image"] as? String, let imageUrl = URL(string: imageURL), let imageData = try? Data(contentsOf: imageUrl) {
+                        if let carouselItem = carouselItems[0] as? [String: Any] ,let imageURL = carouselItem[WEConstants.IMAGE] as? String, let imageUrl = URL(string: imageURL), let imageData = try? Data(contentsOf: imageUrl) {
                             if let image = UIImage(data: imageData) {
                                 images.append(image)
                                 wasLoaded.append(true)
@@ -123,7 +119,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     func downloadRemaining(from downloadFromIndex: Int) {
         for i in downloadFromIndex..<carouselItems.count {
             DispatchQueue.global(qos: .userInitiated).async {
-                if let carouselItem = self.carouselItems[0] as? [String: Any] ,let imageURL = carouselItem["image"] as? String,
+                if let carouselItem = self.carouselItems[0] as? [String: Any] ,let imageURL = carouselItem[WEConstants.IMAGE] as? String,
                    let imageUrl = URL(string: imageURL),
                    let imageData = try? Data(contentsOf: imageUrl),
                    let image = UIImage(data: imageData) {
@@ -142,7 +138,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     }
     
     func setupAutoScroll(_ notification: UNNotification) {
-        if let expandableDetails = notification.request.content.userInfo["expandableDetails"] as? [String: Any],
+        if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any],
            let scrollTime = expandableDetails["ast"] as? String,
            !scrollTime.isEmpty {
             
@@ -185,7 +181,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     }
     
     func initialiseCarouselForNotification(_ notification: UNNotification) {
-        if notification.request.content.userInfo["source"] as? String == "webengage" {
+        if notification.request.content.userInfo[WEConstants.SOURCE] as? String == WEConstants.WEBENGAGE {
             initialiseViewContainers()
             
             let mainViewToSuperViewWidthRatio = MAIN_VIEW_TO_SUPER_VIEW_WIDTH_RATIO
@@ -201,8 +197,8 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
             // for portrait
             var superViewHeight = viewHeight + 2 * verticalMargins
             
-            if let expandableDetails = notification.request.content.userInfo["expandableDetails"] as? [String : Any]{
-                if let colorHex = expandableDetails["bckColor"] as? String{
+            if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String : Any]{
+                if let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
                     if #available(iOS 13.0, *) {
                         self.view?.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXWhiteColor())
                     }
@@ -211,12 +207,12 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                     }}
                 
                 
-                if let mode = expandableDetails["mode"] as? String {
-                    let isPortrait = mode == "portrait"
+                if let mode = expandableDetails[WEConstants.MODE] as? String {
+                    let isPortrait = mode == WEConstants.POTRAIT
                     
                     if !isPortrait {
                         viewWidth = Float(superViewWidth)
-                        viewHeight = viewWidth * LANDSCAPE_ASPECT
+                        viewHeight = viewWidth * WEConstants.LANDSCAPE_ASPECT
                         superViewHeight = viewHeight
                     }
                 }
@@ -244,8 +240,8 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                 self.view?.addSubview(nextView)
                 self.view?.addSubview(nextRightView)
                 
-                if let mode = expandableDetails["mode"] as? String {
-                    let isPortrait = mode == "portrait"
+                if let mode = expandableDetails[WEConstants.MODE] as? String {
+                    let isPortrait = mode == WEConstants.POTRAIT
                     if isPortrait {
                         previousView.subviews[2].alpha = SIDE_VIEWS_FADE_ALPHA
                         nextView.subviews[2].alpha = SIDE_VIEWS_FADE_ALPHA
@@ -258,7 +254,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                 }
                 
                 let bottomSeparator = UIView(frame: CGRect(x: 0.0, y: CGFloat(superViewHeight) - 0.5, width: superViewWidth, height: 0.5))
-                if let colorHex = expandableDetails["bckColor"] as? String{
+                if let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
                     if #available(iOS 13.0, *) {
                         bottomSeparator.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXGreyColor())
                     }}
@@ -271,9 +267,9 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                     self.view?.addSubview(bottomSeparator)
                     
                     if defaultContentHidden {
-                        var richTitle = expandableDetails["rt"] as? String
-                        var richSub = expandableDetails["rst"] as? String
-                        var richMessage = expandableDetails["rm"] as? String
+                        var richTitle = expandableDetails[WEConstants.RICHTITLE] as? String
+                        var richSub = expandableDetails[WEConstants.RICHSUBTITLE] as? String
+                        var richMessage = expandableDetails[WEConstants.RICHMESSAGE] as? String
                         
                         var isRichTitle = false, isRichSubtitle = false, isRichMessage = false
                         
@@ -297,18 +293,18 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                             richMessage = self.notification?.request.content.body
                         }
                         
-                        let colorHex = expandableDetails["bckColor"] as? String
+                        let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String
                         
                         let richTitleLabel = UILabel()
                         if let richTitle = richTitle{
-                            richTitleLabel.attributedText = self.viewController?.getHtmlParsedString(richTitle, isTitle: true, bckColor: colorHex ?? WHITECOLOR)
+                            richTitleLabel.attributedText = self.viewController?.getHtmlParsedString(richTitle, isTitle: true, bckColor: colorHex ?? WEConstants.WHITECOLOR)
                             if let alignment = self.viewController?.naturalTextAligmentForText(richTitleLabel.text){
                                 richTitleLabel.textAlignment = alignment
                             }
                         }
                         let richSubLabel = UILabel()
                         if let richSub = richSub {
-                            richSubLabel.attributedText = self.viewController?.getHtmlParsedString(richSub, isTitle: true, bckColor: colorHex ?? WHITECOLOR)
+                            richSubLabel.attributedText = self.viewController?.getHtmlParsedString(richSub, isTitle: true, bckColor: colorHex ?? WEConstants.WHITECOLOR)
                             if let alignment = self.viewController?.naturalTextAligmentForText(richSubLabel.text){
                                 richSubLabel.textAlignment = alignment
                             }
@@ -316,7 +312,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                         
                         let richBodyLabel = UILabel()
                         if let richMessage = richMessage {
-                            richBodyLabel.attributedText = self.viewController?.getHtmlParsedString(richMessage, isTitle: false, bckColor: colorHex ?? WHITECOLOR)
+                            richBodyLabel.attributedText = self.viewController?.getHtmlParsedString(richMessage, isTitle: false, bckColor: colorHex ?? WEConstants.WHITECOLOR)
                             if let alignment = self.viewController?.naturalTextAligmentForText( richBodyLabel.text){
                                 richBodyLabel.textAlignment = alignment
                                 richBodyLabel.numberOfLines = 0
@@ -325,7 +321,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                         
                         let notificationContentView = UIView()
                         if #available(iOS 13.0, *) {
-                            notificationContentView.backgroundColor = UIColor.colorFromHexString(colorHex ?? WHITECOLOR, defaultColor: UIColor.WEXWhiteColor())
+                            notificationContentView.backgroundColor = UIColor.colorFromHexString(colorHex ?? WEConstants.WHITECOLOR, defaultColor: UIColor.WEXWhiteColor())
                         }
                         
                         notificationContentView.addSubview(richTitleLabel)
@@ -342,20 +338,20 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                             notificationContentView.bottomAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
                                 
                                 richTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-                                richTitleLabel.leadingAnchor.constraint(equalTo: notificationContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                                richTitleLabel.trailingAnchor.constraint(equalTo: notificationContentView.trailingAnchor, constant: -CONTENT_PADDING).isActive = true
-                                richTitleLabel.topAnchor.constraint(equalTo: notificationContentView.topAnchor, constant: CONTENT_PADDING).isActive = true
+                                richTitleLabel.leadingAnchor.constraint(equalTo: notificationContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                                richTitleLabel.trailingAnchor.constraint(equalTo: notificationContentView.trailingAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
+                                richTitleLabel.topAnchor.constraint(equalTo: notificationContentView.topAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
                                            
                                 richSubLabel.translatesAutoresizingMaskIntoConstraints = false
-                                richSubLabel.leadingAnchor.constraint(equalTo: notificationContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                                richSubLabel.trailingAnchor.constraint(equalTo: notificationContentView.trailingAnchor, constant: -CONTENT_PADDING).isActive = true
+                                richSubLabel.leadingAnchor.constraint(equalTo: notificationContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                                richSubLabel.trailingAnchor.constraint(equalTo: notificationContentView.trailingAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
                                 richSubLabel.topAnchor.constraint(equalTo: richTitleLabel.bottomAnchor).isActive = true
                                 
                                 richBodyLabel.translatesAutoresizingMaskIntoConstraints = false
-                                richBodyLabel.leadingAnchor.constraint(equalTo: notificationContentView.leadingAnchor, constant: CONTENT_PADDING).isActive = true
-                                richBodyLabel.trailingAnchor.constraint(equalTo: notificationContentView.trailingAnchor, constant: -CONTENT_PADDING).isActive = true
+                                richBodyLabel.leadingAnchor.constraint(equalTo: notificationContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
+                                richBodyLabel.trailingAnchor.constraint(equalTo: notificationContentView.trailingAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
                                 richBodyLabel.topAnchor.constraint(equalTo: richSubLabel.bottomAnchor).isActive = true
-                            richBodyLabel.bottomAnchor.constraint(equalTo: notificationContentView.bottomAnchor, constant: -CONTENT_PADDING).isActive = true
+                            richBodyLabel.bottomAnchor.constraint(equalTo: notificationContentView.bottomAnchor, constant: -WEConstants.CONTENT_PADDING).isActive = true
                         }
                     } else {
                         if let height = self.view?.bounds.size.height{
@@ -401,27 +397,27 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
         var viewWidth: Float
         var viewHeight: Float
         
-        if let expandableDetails = self.notification?.request.content.userInfo["expandableDetails"] as? [String: Any] , let mode = expandableDetails["mode"] as? String {
-            let isPortrait = mode == "portrait"
+        if let expandableDetails = self.notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any] , let mode = expandableDetails[WEConstants.MODE] as? String {
+            let isPortrait = mode == WEConstants.POTRAIT
             
             if isPortrait {
                 viewWidth = Float(superViewWidth) * mainViewToSuperViewWidthRatio - 2 * verticalMargins
                 viewHeight = viewWidth
             } else {
                 viewWidth = Float(superViewWidth)
-                viewHeight = viewWidth * LANDSCAPE_ASPECT
+                viewHeight = viewWidth * WEConstants.LANDSCAPE_ASPECT
             }
         } else {
             viewWidth = Float(superViewWidth)
-            viewHeight = viewWidth * LANDSCAPE_ASPECT
+            viewHeight = viewWidth * WEConstants.LANDSCAPE_ASPECT
         }
         
         return CGSize(width: Double(viewWidth), height: Double(viewHeight))
     }
     
     func renderAnimated(_ notification: UNNotification) {
-        if notification.request.content.userInfo["source"] as? String == "webengage" {
-            if let expandableDetails = notification.request.content.userInfo["expandableDetails"] as? [String : Any], let mode = expandableDetails["mode"] as? String {
+        if notification.request.content.userInfo[WEConstants.SOURCE] as? String == WEConstants.WEBENGAGE {
+            if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String : Any], let mode = expandableDetails[WEConstants.MODE] as? String {
                 let count = self.carouselItems.count
                 let currentMain = self.current
                 let currentLeft = (currentMain + count - 1) % count
@@ -442,7 +438,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                 let nextRightView = self.viewAtPosition(nextRight)
                 nextRightView.frame = self.frameForViewPosition(.WEXNextRight)
                 
-                let isPortrait = mode == "portrait"
+                let isPortrait = mode == WEConstants.POTRAIT
                 var slideBy: CGFloat = 0.0
                 
                 if isPortrait {
@@ -497,7 +493,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     }
     
     override func didReceiveNotificationResponse(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
-        if response.notification.request.content.userInfo["source"] as? String == "webengage" {
+        if response.notification.request.content.userInfo[WEConstants.SOURCE] as? String == WEConstants.WEBENGAGE {
             print("PUSHDEBUG: ResponseClicked: \(response.actionIdentifier)")
             var dismissed = false
             
@@ -552,12 +548,12 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
         var viewHeight = viewWidth
         let descriptionViewHeight = DESCRIPTION_VIEW_HEIGHT
         
-        if let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any], let mode = expandableDetails["mode"] as? String, mode != "portrait" {
+        if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let mode = expandableDetails[WEConstants.MODE] as? String, mode != WEConstants.POTRAIT {
             viewWidth = Float(superViewWidth)
-            viewHeight = viewWidth * LANDSCAPE_ASPECT
+            viewHeight = viewWidth * WEConstants.LANDSCAPE_ASPECT
         }
-        let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any]
-        let colorHex = expandableDetails?["bckColor"] as? String ?? ""
+        let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]
+        let colorHex = expandableDetails?[WEConstants.BLACKCOLOR] as? String ?? ""
         if #available(iOS 13.0, *) {
             viewToReturn.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXGreyColor())
         }
@@ -594,7 +590,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
         viewContainer.addSubview(imageView)
         viewContainer.addSubview(descriptionView)
         
-        if let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any], let mode = expandableDetails["mode"] as? String, mode == "portrait" {
+        if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let mode = expandableDetails[WEConstants.MODE] as? String, mode == WEConstants.POTRAIT {
             viewContainer.layer.cornerRadius = 8.0
             viewContainer.clipsToBounds = true
             
@@ -630,9 +626,9 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
         var currentViewX = (1.0 - mainViewToSuperViewWidthRatio) / 2.0 * Float(superViewWidth)
         var currentViewY = verticalMargins
         
-        if let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String : Any], let mode = expandableDetails["mode"] as? String, mode != "portrait" {
+        if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String : Any], let mode = expandableDetails[WEConstants.MODE] as? String, mode != WEConstants.POTRAIT {
             viewWidth = Float(superViewWidth)
-            viewHeight = viewWidth * LANDSCAPE_ASPECT
+            viewHeight = viewWidth * WEConstants.LANDSCAPE_ASPECT
             currentViewX = 0.0
             currentViewY = 0.0
             interViewMargins = 0.0
@@ -647,11 +643,11 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     
     func addViewEventForIndex(_ index: Int, isFirst first: Bool) {
         if let userInfo = notification?.request.content.userInfo,
-           let expandableDetails = userInfo["expandableDetails"] as? [String: Any],
-           let items = expandableDetails["items"] as? [[String: Any]],
+           let expandableDetails = userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any],
+           let items = expandableDetails[WEConstants.ITEMS] as? [[String: Any]],
            items.count > index,
-           let expId = userInfo["experiment_id"] as? String,
-           let notifId = userInfo["notification_id"] as? String {
+           let expId = userInfo[WEConstants.EXPERIMENT_ID] as? String,
+           let notifId = userInfo[WEConstants.NOTIFICATION_ID] as? String {
             
             let callToAction = items[index]["id"] as? String ?? ""
             let ctaIdPrev = first ? "UNKNOWN" : items[(index + items.count - 1) % items.count]["id"] as? String ?? ""
@@ -659,7 +655,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
             if let viewController = self.viewController {
                 viewController.addSystemEvent(name: WEX_EVENT_NAME_PUSH_NOTIFICATION_ITEM_VIEW, systemData: [
                     "id": notifId,
-                    "experiment_id": expId,
+                    WEConstants.EXPERIMENT_ID: expId,
                     "call_to_action": callToAction,
                     "navigated_from": ctaIdPrev
                 ], applicationData: [:])
@@ -668,14 +664,14 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     }
     
     func setCTAForIndex(_ index: Int) {
-        if let expandableDetails = notification?.request.content.userInfo["expandableDetails"] as? [String: Any],
-           let items = expandableDetails["items"] as? [String: Any] {
+        if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any],
+           let items = expandableDetails[WEConstants.ITEMS] as? [String: Any] {
             let keys = Array(items.keys)
             if index < keys.count, let viewController = self.viewController {
                 let key = keys[index]
                 if let item = items[key] as? [String: Any] {
                     let ctaId = item["id"] as? String ?? ""
-                    let actionLink = item["actionLink"] as? String ?? ""
+                    let actionLink = item[WEConstants.ACTION_LINK] as? String ?? ""
                     viewController.setCTAWithId(ctaId, andLink: actionLink)
                 }
             }
