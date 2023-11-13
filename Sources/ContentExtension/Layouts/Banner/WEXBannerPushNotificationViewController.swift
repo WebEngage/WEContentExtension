@@ -46,20 +46,29 @@ class WEXBannerPushNotificationViewController: WEXRichPushLayout {
         
         if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any] {
             let imageView = UIImageView()
-            if let image = expandableDetails[WEConstants.IMAGE] as? String, let attachment = notification?.request.content.attachments.first {
-                if #available(iOS 10.0, *){
-                    if let imageData = try? Data(contentsOf: attachment.url), let image = UIImage(data: imageData) {
-                        imageView.image = image
-                    } else {
-                        print("Image not present in cache!")
-                    }
-                } else {
-                    print("Expected to be running iOS version 10 or above")
+            if let imageDetails = expandableDetails["image"] as? String {
+                if let attachments = self.notification?.request.content.attachments, attachments.count > 0 {
+                        if let attachment = attachments.first,
+                           attachment.url.startAccessingSecurityScopedResource() {
+                            
+                            do {
+                                let imageData = try Data(contentsOf: attachment.url)
+                                if let image = UIImage(data: imageData) {
+                                    imageView.image = image
+                                } else {
+                                    print("Image not present in cache!")
+                                }
+                            } catch {
+                                print("Error loading image data: \(error)")
+                            }
+                            
+                            attachment.url.stopAccessingSecurityScopedResource()
+                        }
                 }
             } else {
-                print("Attachment not present for: \(expandableDetails[WEConstants.IMAGE] ?? "")")
+                print("Image not present in payload: \(expandableDetails["image"] ?? "")")
             }
-            
+
             imageView.contentMode = .scaleAspectFill
             mainContentView.addSubview(imageView)
             setupLabelsContainer()
