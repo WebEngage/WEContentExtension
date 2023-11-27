@@ -4,20 +4,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "ContentExtension",
+    name: "WebEngageAppEx",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "ContentExtension",
-            targets: ["ContentExtension"]),
+            name: "WebEngageAppEx",
+            targets: ["WebEngageAppEx"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "ContentExtension"),
+            name: "WebEngageAppEx"),
         .testTarget(
-            name: "ContentExtensionTests",
-            dependencies: ["ContentExtension"]),
+            name: "WebEngageAppExTests",
+            dependencies: ["WebEngageAppEx"]),
     ]
 )
