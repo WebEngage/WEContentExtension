@@ -1,7 +1,7 @@
 import XCTest
-@testable import ContentExtension
+@testable import WEContentExtension
 
-final class ContentExtensionTests: XCTestCase {
+final class WEContentExtensionTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
