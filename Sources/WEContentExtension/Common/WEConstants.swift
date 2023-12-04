@@ -12,6 +12,7 @@ struct WEConstants{
         static let APPEX = "appex"
         static let BIG_PICTURE = "BIG_PICTURE"
         static let BIG_TEXT = "BIG_TEXT"
+        static let OVERLAY = "OVERLAY"
         static let BLACKCOLOR = "bckColor"
         static let CAROUSEL = "CAROUSEL_V1"
         static let COLLAPSED = "collapsed"

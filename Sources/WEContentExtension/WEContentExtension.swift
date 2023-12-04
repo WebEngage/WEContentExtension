@@ -102,6 +102,8 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
             return WEXBannerPushNotificationViewController(notificationViewController: self)
         case WEConstants.BIG_TEXT:
             return WEXTextPushNotificationViewController(notificationViewController: self)
+        case WEConstants.OVERLAY :
+            return WEXOverlayPushNotificationViewController(notificationViewController: self)
         default:
             return nil
         }
