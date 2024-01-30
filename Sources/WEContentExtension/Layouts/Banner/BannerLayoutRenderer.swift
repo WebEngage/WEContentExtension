@@ -25,7 +25,7 @@ extension WEXBannerPushNotificationViewController{
                             
                             do {
                                 let imageData = try Data(contentsOf: attachment.url)
-                                if let image = UIImage(data: imageData) {
+                                if let image = UIImage.animatedImageWithAnimatedGIF(data: imageData){
                                     imageView.image = image
                                 } else {
                                     print("Image not present in cache!")
