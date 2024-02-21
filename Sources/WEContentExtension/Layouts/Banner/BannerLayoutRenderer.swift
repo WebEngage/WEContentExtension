@@ -132,6 +132,9 @@ extension WEXBannerPushNotificationViewController{
                     var imageAspect: CGFloat = CGFloat(WEConstants.LANDSCAPE_ASPECT)
                     if bannerImage.size.height != 0 {
                         imageAspect = bannerImage.size.height / bannerImage.size.width
+                        if imageAspect > 1{
+                            imageAspect = 1
+                        }
                     }
                     
                     imageView.topAnchor.constraint(equalTo: mainContentView.topAnchor).isActive = true

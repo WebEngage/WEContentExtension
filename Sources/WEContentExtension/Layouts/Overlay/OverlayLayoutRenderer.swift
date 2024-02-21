@@ -25,7 +25,7 @@ extension WEXOverlayPushNotificationViewController{
                             
                             do {
                                 let imageData = try Data(contentsOf: attachment.url)
-                                if let image = UIImage(data: imageData) {
+                                if let image = UIImage.animatedImageWithAnimatedGIF(data: imageData) {
                                     imageView.image = image
                                 } else {
                                     print("Image not present in cache!")
@@ -132,6 +132,9 @@ extension WEXOverlayPushNotificationViewController{
                     var imageAspect: CGFloat = CGFloat(WEConstants.LANDSCAPE_ASPECT)
                     if bannerImage.size.height != 0 {
                         imageAspect = bannerImage.size.height / bannerImage.size.width
+                        if imageAspect > 1{
+                            imageAspect = 1
+                        }
                     }
                     
                     imageView.topAnchor.constraint(equalTo: superViewWrapper.topAnchor).isActive = true
