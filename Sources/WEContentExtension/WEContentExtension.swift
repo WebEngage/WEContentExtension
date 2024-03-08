@@ -121,14 +121,15 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     
     // Returns an activity dictionary for the current notification.
     func getActivityDictionaryForCurrentNotification() -> NSMutableDictionary {
-        guard let expId = notification?.request.content.userInfo[WEConstants.EXPERIMENT_ID] as? String,
-              let notifId = notification?.request.content.userInfo[WEConstants.NOTIFICATION_ID] as? String else {
+        guard let userInfo = notification?.request.content.userInfo as? [String: Any],
+              let expId = userInfo[WEConstants.EXPERIMENT_ID] as? String,
+              let notifId = userInfo[WEConstants.NOTIFICATION_ID] as? String else {
             return NSMutableDictionary()
         }
 
         let finalNotifId = "\(expId)|\(notifId)"
-        let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS]
-        let customData = notification?.request.content.userInfo[WEConstants.CUSTOM_DATA] as? [Any]
+        let expandableDetails = userInfo[WEConstants.EXPANDABLEDETAILS]
+        let customData = userInfo[WEConstants.CUSTOM_DATA] as? [Any]
 
         var dictionary = (richPushDefaults?.dictionary(forKey: finalNotifId) as? NSMutableDictionary) ?? NSMutableDictionary()
         if dictionary.count == 0 {

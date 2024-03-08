@@ -299,7 +299,7 @@ extension WEXCarouselPushNotificationViewController{
                     self.setCTAForIndex(self.current)
                     
                     let wasLoaded = self.wasLoaded[self.current]
-                    if wasLoaded {
+                    if wasLoaded && !self.shouldScroll{
                         self.addViewEventForIndex(self.current)
                     }
                 })
