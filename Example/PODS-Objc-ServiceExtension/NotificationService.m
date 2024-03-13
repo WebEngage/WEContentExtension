@@ -7,16 +7,18 @@
 //
 
 #import "NotificationService.h"
-#import "WEServiceExtension/WEServiceExtension-Swift.h"
+// Step 1 : Importing WEServiceExtension
+#import <WEServiceExtension/WEServiceExtension-Swift.h>
 
 @interface NotificationService ()
-
+// Step 2 : Creating Object of service Extension
 @property (nonatomic, strong) WEXPushNotificationService *serviceExtension;
 
 @end
 
 @implementation NotificationService
 
+// Step 3 : Pass necessary information to WebEngage
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
     if (_serviceExtension == NULL){
         _serviceExtension = [[WEXPushNotificationService alloc]init];

@@ -9,7 +9,10 @@
 import UIKit
 import UserNotifications
 import UserNotificationsUI
+
+// Step 1 : Importing WEContentExtension
 import WEContentExtension
 
+// Step 2 : Subclassing
 class NotificationViewController: WEXRichPushNotificationViewController {
 }
