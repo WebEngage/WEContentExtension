@@ -32,7 +32,7 @@ extension WEXRatingPushNotificationViewController{
                 if let attachment = attachments.first,
                    attachment.url.startAccessingSecurityScopedResource() {
                     if let imageData = try? Data(contentsOf: attachment.url),
-                       let image = UIImage(data: imageData) {
+                       let image = UIImage.animatedImageWithAnimatedGIF(data: imageData){
                         backgroundImage = true
                         let imageView = UIImageView()
                         imageView.image = image

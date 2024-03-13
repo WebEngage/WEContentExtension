@@ -88,7 +88,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                             if #available(iOS 10.0, *) {
                                 if let attachmentValue = notification.request.content.attachments.first(where: { $0.identifier == "\(i)" }) {
                                     if attachmentValue.url.startAccessingSecurityScopedResource() {
-                                        if let imageData = try? Data(contentsOf: attachmentValue.url), let image = UIImage(data: imageData) {
+                                        if let imageData = try? Data(contentsOf: attachmentValue.url), let image = UIImage.animatedImageWithAnimatedGIF(data: imageData) {
                                             images.append(image)
                                             wasLoaded[i] = true
                                             if i == 0 {

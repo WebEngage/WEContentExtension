@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension WEXBannerPushNotificationViewController{
+extension WEXOverlayPushNotificationViewController{
     
     /// Sets up the banner image view within the main content view based on expandable details of the notification.
     func setupBannerImageView() {
@@ -25,7 +25,7 @@ extension WEXBannerPushNotificationViewController{
                             
                             do {
                                 let imageData = try Data(contentsOf: attachment.url)
-                                if let image = UIImage.animatedImageWithAnimatedGIF(data: imageData){
+                                if let image = UIImage.animatedImageWithAnimatedGIF(data: imageData) {
                                     imageView.image = image
                                 } else {
                                     print("Image not present in cache!")
@@ -55,7 +55,7 @@ extension WEXBannerPushNotificationViewController{
            let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
             let richContentView = UIView()
             if #available(iOS 13.0, *) {
-                richContentView.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXWhiteColor())
+                richContentView.backgroundColor = UIColor.clear
             }
 
             if let expandedDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]{
@@ -137,11 +137,11 @@ extension WEXBannerPushNotificationViewController{
                         }
                     }
                     
-                    imageView.topAnchor.constraint(equalTo: mainContentView.topAnchor).isActive = true
-                    imageView.leadingAnchor.constraint(equalTo: mainContentView.leadingAnchor).isActive = true
-                    imageView.trailingAnchor.constraint(equalTo: mainContentView.trailingAnchor).isActive = true
+                    imageView.topAnchor.constraint(equalTo: superViewWrapper.topAnchor).isActive = true
+                    imageView.leadingAnchor.constraint(equalTo: superViewWrapper.leadingAnchor).isActive = true
+                    imageView.trailingAnchor.constraint(equalTo: superViewWrapper.trailingAnchor).isActive = true
                     imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: imageAspect).isActive = true
-                    mainContentView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
+                    superViewWrapper.bottomAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
                 }
                 
                 if let richTitleLabel = richContentView.subviews[0] as? UILabel, let richSubTitleLabel = richContentView.subviews[1] as? UILabel, let richBodyLabel = richContentView.subviews[2] as? UILabel {
