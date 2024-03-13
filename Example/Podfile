@@ -1,0 +1,36 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+
+target 'WECE-Example-SPM' do
+  pod 'WebEngage'
+end
+
+target 'WECE-Example-Pods' do
+  pod 'WebEngage'
+  
+  target 'PODS-ContentExtension' do
+    pod 'WEContentExtension', :path => '../'
+  end
+
+  target 'PODS-ServiceExtension' do
+    pod 'WEServiceExtension', :path => '../../WENotificationExtension'
+  end
+end
+
+
+
+target 'WECE-Example-Pods-Objc' do
+  pod 'WebEngage'
+  
+  target 'PODS-Objc-ContentExtension' do
+    pod 'WEContentExtension', :path => '../'
+  end
+
+  target 'PODS-Objc-ServiceExtension' do
+    pod 'WEServiceExtension', :path => '../../WENotificationExtension'
+  end
+end
+
+

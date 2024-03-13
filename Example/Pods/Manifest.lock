@@ -1,0 +1,28 @@
+PODS:
+  - WebEngage (6.6.1)
+  - WEContentExtension (0.1.0)
+  - WEServiceExtension (0.1.0)
+
+DEPENDENCIES:
+  - WebEngage
+  - WEContentExtension (from `../`)
+  - WEServiceExtension (from `../../WENotificationExtension`)
+
+SPEC REPOS:
+  trunk:
+    - WebEngage
+
+EXTERNAL SOURCES:
+  WEContentExtension:
+    :path: "../"
+  WEServiceExtension:
+    :path: "../../WENotificationExtension"
+
+SPEC CHECKSUMS:
+  WebEngage: 440e5cd8e5cb5f4d573ef4fd36d74c299e99cae5
+  WEContentExtension: 3629a4e287eecec60d7b799e3820e41049611d04
+  WEServiceExtension: e75c7f88a628d9d12e556cc04d407fa9cb295a8b
+
+PODFILE CHECKSUM: 338396196c92369257e5bb4a5cf2013fc29c275a
+
+COCOAPODS: 1.14.3

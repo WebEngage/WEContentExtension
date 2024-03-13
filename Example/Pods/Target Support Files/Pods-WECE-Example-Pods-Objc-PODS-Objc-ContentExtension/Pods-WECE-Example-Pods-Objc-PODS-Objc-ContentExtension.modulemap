@@ -1,0 +1,6 @@
+framework module Pods_WECE_Example_Pods_Objc_PODS_Objc_ContentExtension {
+  umbrella header "Pods-WECE-Example-Pods-Objc-PODS-Objc-ContentExtension-umbrella.h"
+
+  export *
+  module * { export * }
+}

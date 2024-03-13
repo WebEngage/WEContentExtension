@@ -1,0 +1,6 @@
+framework module WEServiceExtension {
+  umbrella header "WEServiceExtension-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module WEContentExtension {
+  umbrella header "WEContentExtension-umbrella.h"
+
+  export *
+  module * { export * }
+}
