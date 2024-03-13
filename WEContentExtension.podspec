@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '10.0'
 
-  s.source_files = 'WEContentExtension/Sources/WEContentExtension/**/*'
+  s.source_files = 'Sources/WEContentExtension/**/*'
   
   # s.resource_bundles = {
   #   'WEContentExtension' => ['WEContentExtension/Assets/*.png']
