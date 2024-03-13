@@ -18,6 +18,8 @@
 		88D8B1FF5D019CA63830536D /* Pods_WECE_Example_Pods_PODS_ContentExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 637E9F23AA70C9AC735EF874 /* Pods_WECE_Example_Pods_PODS_ContentExtension.framework */; };
 		941544950F223F27DFFA9CBF /* Pods_WECE_Example_Pods_Objc_PODS_Objc_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1A048C9972899158A52C20 /* Pods_WECE_Example_Pods_Objc_PODS_Objc_ServiceExtension.framework */; };
 		C87844A26D95673839A774AA /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		CE8DDB5E2BA1C4BB00B9041B /* WEServiceExtension in Frameworks */ = {isa = PBXBuildFile; productRef = CE8DDB5D2BA1C4BB00B9041B /* WEServiceExtension */; };
+		CE8DDB612BA1C4DA00B9041B /* WEContentExtension in Frameworks */ = {isa = PBXBuildFile; productRef = CE8DDB602BA1C4DA00B9041B /* WEContentExtension */; };
 		CEA460CA2B9F45A8007D6167 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA460C92B9F45A8007D6167 /* UserNotifications.framework */; };
 		CEA460CC2B9F45A8007D6167 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA460CB2B9F45A8007D6167 /* UserNotificationsUI.framework */; };
 		CEA460CF2B9F45A8007D6167 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA460CE2B9F45A8007D6167 /* NotificationViewController.swift */; };
@@ -32,13 +34,11 @@
 		CEA460F92B9F48BF007D6167 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		CEA4610A2B9F48E1007D6167 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA461092B9F48E1007D6167 /* NotificationService.swift */; };
 		CEA4610E2B9F48E1007D6167 /* SPM-ServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CEA461072B9F48E1007D6167 /* SPM-ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CEA461182B9F4969007D6167 /* WEServiceExtension in Frameworks */ = {isa = PBXBuildFile; productRef = CEA461172B9F4969007D6167 /* WEServiceExtension */; };
 		CEA4611E2B9F4DDA007D6167 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA460C92B9F45A8007D6167 /* UserNotifications.framework */; };
 		CEA4611F2B9F4DDA007D6167 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA460CB2B9F45A8007D6167 /* UserNotificationsUI.framework */; };
 		CEA461222B9F4DDA007D6167 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA461212B9F4DDA007D6167 /* NotificationViewController.swift */; };
 		CEA461252B9F4DDA007D6167 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = CEA461242B9F4DDA007D6167 /* Base */; };
 		CEA461292B9F4DDA007D6167 /* SPM-ContentExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CEA4611D2B9F4DDA007D6167 /* SPM-ContentExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CEA4612F2B9F4E0A007D6167 /* WEContentExtension in Frameworks */ = {isa = PBXBuildFile; productRef = CEA4612E2B9F4E0A007D6167 /* WEContentExtension */; };
 		CEA461372B9F4EA8007D6167 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		CEA461382B9F4EA8007D6167 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		CEA4613C2B9F4EA8007D6167 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -252,7 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEA461182B9F4969007D6167 /* WEServiceExtension in Frameworks */,
+				CE8DDB5E2BA1C4BB00B9041B /* WEServiceExtension in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,7 +262,7 @@
 			files = (
 				CEA4611F2B9F4DDA007D6167 /* UserNotificationsUI.framework in Frameworks */,
 				CEA4611E2B9F4DDA007D6167 /* UserNotifications.framework in Frameworks */,
-				CEA4612F2B9F4E0A007D6167 /* WEContentExtension in Frameworks */,
+				CE8DDB612BA1C4DA00B9041B /* WEContentExtension in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,6 +531,8 @@
 			dependencies = (
 			);
 			name = "PODS-ContentExtension";
+			packageProductDependencies = (
+			);
 			productName = "PODS-ContentExtension";
 			productReference = CEA460C82B9F45A8007D6167 /* PODS-ContentExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -549,6 +551,8 @@
 			dependencies = (
 			);
 			name = "PODS-ServiceExtension";
+			packageProductDependencies = (
+			);
 			productName = "PODS-ServiceExtension";
 			productReference = CEA460DF2B9F4749007D6167 /* PODS-ServiceExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -589,7 +593,7 @@
 			);
 			name = "SPM-ServiceExtension";
 			packageProductDependencies = (
-				CEA461172B9F4969007D6167 /* WEServiceExtension */,
+				CE8DDB5D2BA1C4BB00B9041B /* WEServiceExtension */,
 			);
 			productName = "SPM-ServiceExtension";
 			productReference = CEA461072B9F48E1007D6167 /* SPM-ServiceExtension.appex */;
@@ -609,7 +613,7 @@
 			);
 			name = "SPM-ContentExtension";
 			packageProductDependencies = (
-				CEA4612E2B9F4E0A007D6167 /* WEContentExtension */,
+				CE8DDB602BA1C4DA00B9041B /* WEContentExtension */,
 			);
 			productName = "SPM-ContentExtension";
 			productReference = CEA4611D2B9F4DDA007D6167 /* SPM-ContentExtension.appex */;
@@ -720,8 +724,8 @@
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
 			packageReferences = (
-				CEA461162B9F4969007D6167 /* XCLocalSwiftPackageReference "../../WENotificationExtension/WEServiceExtension" */,
-				CEA4612D2B9F4E0A007D6167 /* XCLocalSwiftPackageReference "../WEContentExtension" */,
+				CE8DDB572BA1C45900B9041B /* XCLocalSwiftPackageReference "../../WENotificationExtension" */,
+				CE8DDB5F2BA1C4DA00B9041B /* XCRemoteSwiftPackageReference "WEContentExtension" */,
 			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
@@ -2018,23 +2022,32 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		CEA461162B9F4969007D6167 /* XCLocalSwiftPackageReference "../../WENotificationExtension/WEServiceExtension" */ = {
+		CE8DDB572BA1C45900B9041B /* XCLocalSwiftPackageReference "../../WENotificationExtension" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../WENotificationExtension/WEServiceExtension;
-		};
-		CEA4612D2B9F4E0A007D6167 /* XCLocalSwiftPackageReference "../WEContentExtension" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../WEContentExtension;
+			relativePath = ../../WENotificationExtension;
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		CE8DDB5F2BA1C4DA00B9041B /* XCRemoteSwiftPackageReference "WEContentExtension" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WebEngage/WEContentExtension.git";
+			requirement = {
+				branch = feature/cocoapods;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		CEA461172B9F4969007D6167 /* WEServiceExtension */ = {
+		CE8DDB5D2BA1C4BB00B9041B /* WEServiceExtension */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = CE8DDB572BA1C45900B9041B /* XCLocalSwiftPackageReference "../../WENotificationExtension" */;
 			productName = WEServiceExtension;
 		};
-		CEA4612E2B9F4E0A007D6167 /* WEContentExtension */ = {
+		CE8DDB602BA1C4DA00B9041B /* WEContentExtension */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = CE8DDB5F2BA1C4DA00B9041B /* XCRemoteSwiftPackageReference "WEContentExtension" */;
 			productName = WEContentExtension;
 		};
 /* End XCSwiftPackageProductDependency section */
