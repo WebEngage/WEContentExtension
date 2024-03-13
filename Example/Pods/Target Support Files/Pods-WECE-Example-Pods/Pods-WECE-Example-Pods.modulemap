@@ -1,6 +1,0 @@
-framework module Pods_WECE_Example_Pods {
-  umbrella header "Pods-WECE-Example-Pods-umbrella.h"
-
-  export *
-  module * { export * }
-}
