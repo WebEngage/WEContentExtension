@@ -1,28 +1,33 @@
 # WEContentExtension
 
-[![CI Status](https://img.shields.io/travis/BhaveshWebEngage/WEContentExtension.svg?style=flat)](https://travis-ci.org/BhaveshWebEngage/WEContentExtension)
-[![Version](https://img.shields.io/cocoapods/v/WEContentExtension.svg?style=flat)](https://cocoapods.org/pods/WEContentExtension)
-[![License](https://img.shields.io/cocoapods/l/WEContentExtension.svg?style=flat)](https://cocoapods.org/pods/WEContentExtension)
-[![Platform](https://img.shields.io/cocoapods/p/WEContentExtension.svg?style=flat)](https://cocoapods.org/pods/WEContentExtension)
-
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Requirements
 
 ## Installation
 
 WEContentExtension is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+it, simply add the following below :
 
-```ruby
-pod 'WEContentExtension'
-```
+## Notification Content Extension Setup
+### Create Notification Content Extension
+#### Step 1:
+In Xcode, navigate to `File` > `New` > `Target` and select `Notification Content Extension`.
 
-## Author
+#### Step 2:
+Click Next, fill out the Product Name as `NotificationViewController`, and click Finish.
 
-BhaveshWebEngage, bhavesh.sarwar@webengage.com
+#### Step 3:
+Click Activate on the prompt shown to activate the content extension. Xcode will now create a new top-level folder in your project with the name `NotificationViewController`.
+
+### Add WebEngage Extensions to the respective Targets
+Navigate to `Project` > `Package Dependencies` and click on the Add `(+)` button.
+
+Steps to add WebEngage Content Service
+#### Step 1:
+Search for https://github.com/WebEngage/WEContentExtension.git in the search bar.
+#### Step 2:
+Under `Add to Target` select  `NotificationViewController` (Your Content Extension Target).
+#### Step 3:
+Click `Add Package`.
+
 
 ## License
 
