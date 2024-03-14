@@ -164,10 +164,8 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
       <br>
 
       `NotificationViewController.swift` will look like above below code snippet
-
-          ```swift
-          
-          import UIKit
+      ```swift
+       import UIKit
           import UserNotifications
           import UserNotificationsUI
 
@@ -180,7 +178,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
               // remove all existing code inside this class
               
           }
-          ```
+      ```
 ---          
 - ### ***Step 4 :*** Configure ContentExtension-Info.plist
 
