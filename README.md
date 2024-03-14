@@ -165,20 +165,68 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
 
       `NotificationViewController.swift` will look like above below code snippet
       ```swift
-       import UIKit
-          import UserNotifications
-          import UserNotificationsUI
+      import UIKit
+      import UserNotifications
+      import UserNotificationsUI
 
-          // Import WebEngage Extension SDK
-          import WEContentExtension
+      // Import WebEngage Extension SDK
+      import WEContentExtension
 
-          // Subclassing current class with WebEngage provided class
-          class NotificationViewController: WEXRichPushNotificationViewController {
+      // Subclassing current class with WebEngage provided class
+      class NotificationViewController: WEXRichPushNotificationViewController {
 
-              // remove all existing code inside this class
-              
-          }
+          // remove all existing code inside this class
+          
+      }
       ```
+  - #### Objective C
+    
+    1. Open **NotificationViewController.m**
+
+    2. Import `WEContentExtension` 
+
+    3. Create Object of `WEContentExtension`
+
+    4. Pass necessary information to `WebEngage` through above created object
+
+    `NotificationViewController.m` will look like above below code snippet
+    ```Objective-C
+    #import "NotificationViewController.h"
+    #import <UserNotifications/UserNotifications.h>
+    #import <UserNotificationsUI/UserNotificationsUI.h>
+
+    // Step 1 : Importing WEContentExtension
+    #import <WEContentExtension/WEContentExtension-Swift.h>
+
+    @interface NotificationViewController () <UNNotificationContentExtension>
+
+    @property IBOutlet UILabel *label;
+    // Step 2 : Creating Object of content Extension
+    @property WEXRichPushNotificationViewController *weRichPushVC;
+
+    @end
+
+    @implementation NotificationViewController
+
+    // Step 3 : Pass necessary information to WebEngage
+    - (void)viewDidLoad {
+        if (_weRichPushVC == NULL){
+            _weRichPushVC = [[WEXRichPushNotificationViewController alloc]init];
+        }
+        [_weRichPushVC setUpViewsWithParentVC:self];
+        [super viewDidLoad];
+        
+    }
+
+    - (void)didReceiveNotification:(UNNotification *)notification {
+        [_weRichPushVC didReceiveNotification:notification];
+    }
+
+    - (void)didReceiveNotificationResponse:(UNNotificationResponse *)response completionHandler:(void (^)(UNNotificationContentExtensionResponseOption))completion{
+        [_weRichPushVC didReceiveNotificationResponse:response completionHandler:completion];
+    }
+    @end
+    ```
 ---          
 - ### ***Step 4 :*** Configure ContentExtension-Info.plist
 
