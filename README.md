@@ -28,6 +28,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
 - [Configure ContentExtension-Info.plist](#step-4--configure-contentextension-infoplist)
 - [Configure App Groups](#step-5--create-app-groups-for-all-targets)
 - [Build and Test](#step-6--build-and-test)
+- [Migration from WebEngageAppEx to WEContentExtension](#migration-from-webengageappex-to-wecontentextension)
 
  </details>
 <!-- End table -->
@@ -95,7 +96,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
     1. Navigate to `File` > `Swift Packages` > `Add Package Dependency...`.
     <br><br>
       <p align="center">
-        <img src="InetgrationScreenshots/SPM-1.png" alt="Screenshot 1 (SPM)" width="1000">
+        <img src="https://github.com/WebEngage/WEContentExtension/blob/release/0.1.0/InetgrationScreenshots/SPM-1.png" alt="Screenshot 1 (SPM)" width="1000">
       </p>
       <h5 align="center">Screenshot 1 (SPM)</h5>
 
@@ -108,7 +109,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
     5. Click `Next`.
     <br><br>
       <p align="center">
-        <img src="InetgrationScreenshots/SPM-2.png" alt="Screenshot 1 (SPM)" width="1000">
+        <img src="https://github.com/WebEngage/WEContentExtension/blob/release/0.1.0/InetgrationScreenshots/SPM-2.png" alt="Screenshot 1 (SPM)" width="1000">
       </p>
       <h5 align="center">Screenshot 2 (SPM)</h5>
 
@@ -117,7 +118,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
     7. Click `Finish`.
     <br><br>
       <p align="center">
-        <img src="InetgrationScreenshots/SPM-3.png" alt="Screenshot 1 (SPM)" width="1000">
+        <img src="https://github.com/WebEngage/WEContentExtension/blob/release/0.1.0/InetgrationScreenshots/SPM-3.png" alt="Screenshot 1 (SPM)" width="1000">
       </p>
       <h5 align="center">Screenshot 3 (SPM)</h5>
 
@@ -307,7 +308,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
   - `Info.plist` shoul look like below screenshot
     <br><br>
     <p align="center">
-      <img src="InetgrationScreenshots/info.png" alt="InfoPlist" width="1000">
+      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/0.1.0/InetgrationScreenshots/info.png" alt="InfoPlist" width="1000">
     </p>
     <h5 align="center">info.plist</h5>
 
@@ -324,17 +325,17 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
   - #### **_Screenshots_**
     <br><br>
       <p align="center">
-      <img src="InetgrationScreenshots/appGroup/1.png" alt="Screenshot 1" width="1000">
+      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/0.1.0/InetgrationScreenshots/appGroup/1.png" alt="Screenshot 1" width="1000">
       </p>
       <h5 align="center">Screenshot 1</h5>
       <br><br>
       <p align="center">
-      <img src="InetgrationScreenshots/appGroup/2.png" alt="Screenshot 1" width="1000">
+      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/0.1.0/InetgrationScreenshots/appGroup/2.png" alt="Screenshot 1" width="1000">
       </p>
       <h5 align="center">Screenshot 2</h5>
       <br><br>
       <p align="center">
-      <img src="InetgrationScreenshots/appGroup/3.png" alt="Screenshot 1" width="1000">
+      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/0.1.0/InetgrationScreenshots/appGroup/3.png" alt="Screenshot 1" width="1000">
       </p>
       <h5 align="center">Screenshot 3</h5>
 
@@ -346,7 +347,34 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
 
   - Test your Content Extension to ensure that it functions as expected with the integrated library.
 
+---           
+
+- ### Migration from WebEngageAppEx to WEContentExtension
+
+  - If you've been using the old content extension and want to switch to the new one, just stick to these instructions in the documentation:
+
+  - Below are the steps to migrate from WebEngageAppEx to the WEContentExtension:
+
+    - Remove `pod 'WebEngageAppEx/ContentExtension'` from the Content Extension Target `NotificationViewController` in the podfile.
+    - Then Perform `pod install`
+    - Then Follow Step [Approach 2 : Cocoapods](#approach-2--integrating-via-cocoapods)
+    - After successfully completing the above step, let's move to the code section:
+
+      - #### For Swift Users :
+
+        - Open the `NotificationViewController.swift` file.
+        - Replace `import WebEngageAppEx` with `import WEContentExtension`.
+        - Done
+
+      - #### For Objective-C Users:
+        - Open the NotificationViewController.h file.
+        - Remove the import statement `#import <WebEngageAppEx/WEXRichPushNotificationViewController.h>`.
+        - Replace `WEXRichPushNotificationViewController` with `UNNotificationContentExtension`.
+        - Open the `NotificationViewController.m` file.
+        - Replace the code as given in Step [Objective C](#objective-c)
+
 ---
+
 
 ## License
 
