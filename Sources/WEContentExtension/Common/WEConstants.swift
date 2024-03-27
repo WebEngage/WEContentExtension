@@ -45,6 +45,6 @@ struct WEConstants{
         static let WEBENGAGE = "webengage"
         static let WEX_APP_GROUP = "WEX_APP_GROUP"
         static let WEX_CONTENT_EXTENSION_VERSION = "1.1.0"
-        static let WEX_CONTENT_EXTENSION_VERSION_STRING = "WEG_Content_Extension_Version"
+        static let WEX_CONTENT_EXTENSION_VERSION_STRING = "WEContentExtension_version"
         static let WHITECOLOR = "#FFFFFF"
 }
