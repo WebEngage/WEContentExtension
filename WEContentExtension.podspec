@@ -18,7 +18,8 @@ Pod::Spec.new do |s|
   s.platform          = :ios
   s.swift_version = '5.0'
   s.ios.deployment_target = '12.0'
-  s.static_framework  = true
   s.dependency 'WebEngage','>= 6.4.0'
+  s.frameworks = 'Foundation'
+  s.weak_frameworks = 'UserNotifications', 'UserNotificationsUI'
   
 end
