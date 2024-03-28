@@ -12,7 +12,6 @@ Pod::Spec.new do |s|
   s.social_media_url  = 'http://twitter.com/webengage'
   s.author           = { 'WebEngage' => 'mobile@webengage.com' }
   s.source           = { :git => 'https://github.com/WebEngage/WEContentExtension.git', :tag => s.version.to_s }
-  s.ios.deployment_target = '10.0'
   s.source_files = 'Sources/WEContentExtension/**/*'
   s.documentation_url = 'https://docs.webengage.com/docs/ios-getting-started'
   s.platform          = :ios
