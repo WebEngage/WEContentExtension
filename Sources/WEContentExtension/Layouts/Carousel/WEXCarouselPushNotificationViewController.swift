@@ -219,7 +219,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     
     func viewAtPosition(_ index: Int) -> UIView {
         let cachedViewIndex = cachedViewsIndexForViewAtIndex(index)
-        var viewToReturn: UIView = viewContainers[cachedViewIndex] as! UIView
+        let viewToReturn: UIView = viewContainers[cachedViewIndex] as! UIView
         
         let mainViewToSuperViewWidthRatio = MAIN_VIEW_TO_SUPER_VIEW_WIDTH_RATIO
         let verticalMargins = MAIN_VIEW_TO_SUPER_VIEW_VERTICAL_MARGINS
@@ -242,7 +242,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
         }
         
         let carouselItem = carouselItems[index] as? [String : Any]
-        var viewContainer: UIView = viewToReturn
+        let viewContainer: UIView = viewToReturn
         let image = images[index]
         
         let imageView = imageViews[cachedViewIndex]

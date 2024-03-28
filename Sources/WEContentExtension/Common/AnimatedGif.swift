@@ -73,7 +73,6 @@ extension UIImage {
 
     private static func frameArray(images: [CGImage], delays: [Int], totalDurationCentiseconds: Int) -> [UIImage] {
         let gcd = vectorGCD(delays)
-        let frameCount = totalDurationCentiseconds / gcd
 
         var frames: [UIImage] = []
 

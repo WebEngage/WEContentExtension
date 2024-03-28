@@ -35,7 +35,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     }
 
     open override var canBecomeFirstResponder: Bool {
-        if let currentLayout = self.currentLayout{
+        if (self.currentLayout != nil){
             return true
         }
         return false
@@ -133,7 +133,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         let expandableDetails = userInfo[WEConstants.EXPANDABLEDETAILS]
         let customData = userInfo[WEConstants.CUSTOM_DATA] as? [Any]
 
-        var dictionary = (richPushDefaults?.dictionary(forKey: finalNotifId) as? NSMutableDictionary) ?? NSMutableDictionary()
+        let dictionary = (richPushDefaults?.dictionary(forKey: finalNotifId) as? NSMutableDictionary) ?? NSMutableDictionary()
         if dictionary.count == 0 {
             dictionary[WEConstants.EXPERIMENT_ID] = expId
             dictionary[WEConstants.NOTIFICATION_ID] = notifId

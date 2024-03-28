@@ -26,7 +26,7 @@ extension WEXRatingPushNotificationViewController{
 
         var backgroundImage = false
 
-        if let image = expandableDetails?[WEConstants.IMAGE] as? String,
+        if ((expandableDetails?[WEConstants.IMAGE] as? String) != nil),
            let attachments = self.notification?.request.content.attachments,
            attachments.count > 0 {
                 if let attachment = attachments.first,

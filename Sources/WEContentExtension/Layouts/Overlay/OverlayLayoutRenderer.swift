@@ -18,7 +18,7 @@ extension WEXOverlayPushNotificationViewController{
         
         if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any] {
             let imageView = UIImageView()
-            if let imageDetails = expandableDetails["image"] as? String {
+            if ((expandableDetails["image"] as? String) != nil) {
                 if let attachments = self.notification?.request.content.attachments, attachments.count > 0 {
                         if let attachment = attachments.first,
                            attachment.url.startAccessingSecurityScopedResource() {
@@ -45,7 +45,11 @@ extension WEXOverlayPushNotificationViewController{
             mainContentView.addSubview(imageView)
             setupLabelsContainer()
         } else {
-            print("Image not present in payload: \(notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS])")
+            if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] {
+                print("Image not present in payload: \(expandableDetails)")
+            } else {
+                print("Image not present in payload")
+            }
         }
     }
 
