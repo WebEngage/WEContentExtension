@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   This pod includes various subspecs which are intended for use in Application Extensions, and depends on APIs which are App Extension Safe. The Core subspecs provides APIs which lets you track Users and Events from within Application Extensions.
   DESC
 
-  s.homepage         = 'https://github.com/WebEngage/WEContentExtension'
+  s.homepage         = 'https://webengage.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.social_media_url  = 'http://twitter.com/webengage'
   s.author           = { 'WebEngage' => 'mobile@webengage.com' }
@@ -17,7 +17,6 @@ Pod::Spec.new do |s|
   s.platform          = :ios
   s.swift_version = '5.0'
   s.ios.deployment_target = '12.0'
-  s.dependency 'WebEngage','>= 6.4.0'
   s.frameworks = 'Foundation'
   s.weak_frameworks = 'UserNotifications', 'UserNotificationsUI'
   
