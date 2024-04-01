@@ -64,13 +64,15 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                     let downloadedCount = notification.request.content.attachments.count
                     setCTAForIndex(0)
                     var firstImageAdded = false
-                    
+                    setupAutoScroll(notification)
                     if downloadedCount == 0 {
                         if let carouselItem = carouselItems[0] as? [String: Any] ,let imageURL = carouselItem[WEConstants.IMAGE] as? String, let imageUrl = URL(string: imageURL), let imageData = try? Data(contentsOf: imageUrl) {
                             if let image = UIImage(data: imageData) {
                                 images.append(image)
                                 wasLoaded.append(true)
-                                addViewEventForIndex(0, isFirst: true)
+                                if !self.shouldScroll{
+                                    addViewEventForIndex(0, isFirst: true)
+                                }
                             } else {
                                 images.append(getErrorImage()!)
                                 wasLoaded.append(false)
@@ -86,11 +88,13 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                             if #available(iOS 10.0, *) {
                                 if let attachmentValue = notification.request.content.attachments.first(where: { $0.identifier == "\(i)" }) {
                                     if attachmentValue.url.startAccessingSecurityScopedResource() {
-                                        if let imageData = try? Data(contentsOf: attachmentValue.url), let image = UIImage(data: imageData) {
+                                        if let imageData = try? Data(contentsOf: attachmentValue.url), let image = UIImage.animatedImageWithAnimatedGIF(data: imageData) {
                                             images.append(image)
                                             wasLoaded[i] = true
                                             if i == 0 {
-                                                addViewEventForIndex(0, isFirst: true)
+                                                if !self.shouldScroll{
+                                                    addViewEventForIndex(0, isFirst: true)
+                                                }
                                             }
                                             attachmentValue.url.stopAccessingSecurityScopedResource()
                                         } else {
@@ -106,7 +110,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                         }
                     }
                     initialiseCarouselForNotification(notification)
-                    setupAutoScroll(notification)
+                   
                     
                     if downloadedCount < items.count {
                         downloadRemaining(from: downloadedCount)
@@ -117,13 +121,17 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     }
     
     func setupAutoScroll(_ notification: UNNotification) {
-        if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any],
-           let scrollTime = expandableDetails["ast"] as? String,
-           !scrollTime.isEmpty {
+        if let expandableDetails = notification.request.content.userInfo["expandableDetails"] as? [String: Any],
+           let scrollTimeValue = expandableDetails["ast"] {
             
-            if let intervalInMili = Float(scrollTime) {
-                let intervalSeconds = Float(intervalInMili / 1000.0)
-                
+            var intervalSeconds: Float = 0
+            
+            if let scrollTimeStringValue = scrollTimeValue as? String,
+               let scrollTimeInterval = Float(scrollTimeStringValue) {
+                intervalSeconds = scrollTimeInterval / 1000.0
+            } else if let scrollTimeNumberValue = scrollTimeValue as? NSNumber {
+                intervalSeconds = Float(truncating: scrollTimeNumberValue) / 1000.0
+            }
                 // Scroll if interval is more than 0
                 if intervalSeconds > 0 {
                     shouldScroll = true
@@ -139,11 +147,13 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                     }
                 }
             }
-        }
     }
     
     @objc func scrollContent(_ scrollTimer: Timer) {
-        if shouldScroll {
+        
+        // this will check if you have clicked on next button of notification
+        // && if notification still in expanded state
+        if shouldScroll && ((self.viewController?.extensionContext) != nil) {
             if let notification = scrollTimer.userInfo as? UNNotification {
                 renderAnimated(notification)
             } else {
@@ -209,7 +219,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     
     func viewAtPosition(_ index: Int) -> UIView {
         let cachedViewIndex = cachedViewsIndexForViewAtIndex(index)
-        var viewToReturn: UIView = viewContainers[cachedViewIndex] as! UIView
+        let viewToReturn: UIView = viewContainers[cachedViewIndex] as! UIView
         
         let mainViewToSuperViewWidthRatio = MAIN_VIEW_TO_SUPER_VIEW_WIDTH_RATIO
         let verticalMargins = MAIN_VIEW_TO_SUPER_VIEW_VERTICAL_MARGINS
@@ -232,7 +242,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
         }
         
         let carouselItem = carouselItems[index] as? [String : Any]
-        var viewContainer: UIView = viewToReturn
+        let viewContainer: UIView = viewToReturn
         let image = images[index]
         
         let imageView = imageViews[cachedViewIndex]

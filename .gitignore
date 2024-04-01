@@ -1,0 +1,7 @@
+xcschememanagement.plist
+UserInterfaceState.xcuserstate
+.DS_Store
+Example/WEContentExtension.xcworkspace/xcuserdata
+Example/Pods
+Podfile.lock
+Example/WEContentExtension.xcworkspace/xcshareddata
