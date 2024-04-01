@@ -26,13 +26,13 @@ extension WEXRatingPushNotificationViewController{
 
         var backgroundImage = false
 
-        if let image = expandableDetails?[WEConstants.IMAGE] as? String,
+        if ((expandableDetails?[WEConstants.IMAGE] as? String) != nil),
            let attachments = self.notification?.request.content.attachments,
            attachments.count > 0 {
                 if let attachment = attachments.first,
                    attachment.url.startAccessingSecurityScopedResource() {
                     if let imageData = try? Data(contentsOf: attachment.url),
-                       let image = UIImage(data: imageData) {
+                       let image = UIImage.animatedImageWithAnimatedGIF(data: imageData){
                         backgroundImage = true
                         let imageView = UIImageView()
                         imageView.image = image
@@ -314,7 +314,7 @@ extension WEXRatingPushNotificationViewController{
             starRatingWrapper.topAnchor.constraint(equalTo: separator.bottomAnchor).isActive = true
             starRatingWrapper.heightAnchor.constraint(equalToConstant: STAR_BAR_HEIGHT).isActive = true
             
-            self.viewController?.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: superViewWrapper.bottomAnchor).isActive = true
+            self.viewController?.view.bottomAnchor.constraint(equalTo: superViewWrapper.bottomAnchor).isActive = true
             
             // Main Content View Internal Constraints
             var textDisplaySubviewIndex = 0

@@ -166,7 +166,7 @@ extension WEXCarouselPushNotificationViewController{
                                 notificationContentView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
                                 notificationContentView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
                                 notificationContentView.topAnchor.constraint(equalTo: bottomSeparator.bottomAnchor).isActive = true
-                            notificationContentView.bottomAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+                            notificationContentView.bottomAnchor.constraint(equalTo: viewController.view.bottomAnchor).isActive = true
                                 
                                 richTitleLabel.translatesAutoresizingMaskIntoConstraints = false
                                 richTitleLabel.leadingAnchor.constraint(equalTo: notificationContentView.leadingAnchor, constant: WEConstants.CONTENT_PADDING).isActive = true
@@ -299,7 +299,7 @@ extension WEXCarouselPushNotificationViewController{
                     self.setCTAForIndex(self.current)
                     
                     let wasLoaded = self.wasLoaded[self.current]
-                    if wasLoaded {
+                    if wasLoaded && !self.shouldScroll{
                         self.addViewEventForIndex(self.current)
                     }
                 })

@@ -77,7 +77,7 @@ extension WEXTextPushNotificationViewController {
                 superViewWrapper.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
                 superViewWrapper.bottomAnchor.constraint(equalTo: richContentView.bottomAnchor).isActive = true
 
-                viewController.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: superViewWrapper.bottomAnchor).isActive = true
+                viewController.view.bottomAnchor.constraint(equalTo: superViewWrapper.bottomAnchor).isActive = true
 
                 richContentView.translatesAutoresizingMaskIntoConstraints = false
                 richContentView.leadingAnchor.constraint(equalTo: superViewWrapper.leadingAnchor).isActive = true

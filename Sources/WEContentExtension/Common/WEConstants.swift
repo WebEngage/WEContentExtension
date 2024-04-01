@@ -12,6 +12,7 @@ struct WEConstants{
         static let APPEX = "appex"
         static let BIG_PICTURE = "BIG_PICTURE"
         static let BIG_TEXT = "BIG_TEXT"
+        static let OVERLAY = "OVERLAY"
         static let BLACKCOLOR = "bckColor"
         static let CAROUSEL = "CAROUSEL_V1"
         static let COLLAPSED = "collapsed"
@@ -43,7 +44,7 @@ struct WEConstants{
         static let WENOTIFICATIONGROUP = "WEGNotificationGroup"
         static let WEBENGAGE = "webengage"
         static let WEX_APP_GROUP = "WEX_APP_GROUP"
-        static let WEX_CONTENT_EXTENSION_VERSION = "1.0.2"
-        static let WEX_CONTENT_EXTENSION_VERSION_STRING = "WEG_Content_Extension_Version"
+        static let WEX_CONTENT_EXTENSION_VERSION = "1.0.0"
+        static let WEX_CONTENT_EXTENSION_VERSION_STRING = "WEContentExtension_version"
         static let WHITECOLOR = "#FFFFFF"
 }

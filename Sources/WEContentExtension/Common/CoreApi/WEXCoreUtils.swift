@@ -47,10 +47,8 @@ struct WEXCoreUtils {
     // Sets default values in the shared UserDefaults for the app extension.
     static func setExtensionDefaults() {
         if let sharedDefaults = getSharedUserDefaults() {
-            if sharedDefaults.value(forKey: WEConstants.WEX_CONTENT_EXTENSION_VERSION_STRING) == nil {
                 sharedDefaults.setValue(WEConstants.WEX_CONTENT_EXTENSION_VERSION, forKey: WEConstants.WEX_CONTENT_EXTENSION_VERSION_STRING)
                 sharedDefaults.synchronize()
-            }
         }
     }
 }
