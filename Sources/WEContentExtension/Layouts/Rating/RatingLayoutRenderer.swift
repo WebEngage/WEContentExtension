@@ -83,7 +83,7 @@ extension WEXRatingPushNotificationViewController{
 
         if titlePresent {
             titleLabel = UILabel()
-            if let alignment = self.viewController?.naturalTextAligmentForText(title){
+            if let alignment = self.viewController?.naturalTextAlignmentForText(title){
                 titleLabel?.textAlignment = alignment
             }
             titleLabel?.text = title
@@ -104,7 +104,7 @@ extension WEXRatingPushNotificationViewController{
 
         if messagePresent {
             let messageLabel = UILabel()
-            if let alignment = self.viewController?.naturalTextAligmentForText(message){
+            if let alignment = self.viewController?.naturalTextAlignmentForText(messageLabel.text, forDescription: true){
                 messageLabel.textAlignment = alignment
             }
             messageLabel.text = message
@@ -169,14 +169,14 @@ extension WEXRatingPushNotificationViewController{
         let richTitleLabel = UILabel()
         if let richTitle = richTitle{
             richTitleLabel.attributedText = self.viewController?.getHtmlParsedString(richTitle, isTitle: true, bckColor: colorHex ?? WEConstants.WHITECOLOR)
-            if let alignment = self.viewController?.naturalTextAligmentForText(richTitleLabel.text){
+            if let alignment = self.viewController?.naturalTextAlignmentForText(richTitleLabel.text){
                 richTitleLabel.textAlignment = alignment
             }
         }
         let richSubLabel = UILabel()
         if let richSub = richSub {
             richSubLabel.attributedText = self.viewController?.getHtmlParsedString(richSub, isTitle: true, bckColor: colorHex ?? WEConstants.WHITECOLOR)
-            if let alignment = self.viewController?.naturalTextAligmentForText(richSubLabel.text){
+            if let alignment = self.viewController?.naturalTextAlignmentForText(richSubLabel.text){
                 richSubLabel.textAlignment = alignment
             }
         }
@@ -184,7 +184,7 @@ extension WEXRatingPushNotificationViewController{
         let richBodyLabel = UILabel()
         if let richMessage = richMessage {
             richBodyLabel.attributedText = self.viewController?.getHtmlParsedString(richMessage, isTitle: false, bckColor: colorHex ?? WEConstants.WHITECOLOR)
-            if let alignment = self.viewController?.naturalTextAligmentForText( richBodyLabel.text){
+            if let alignment = self.viewController?.naturalTextAlignmentForText(richBodyLabel.text, forDescription: true){
                 richBodyLabel.textAlignment = alignment
                 richBodyLabel.numberOfLines = 0
             }

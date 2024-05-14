@@ -82,19 +82,19 @@ extension WEXOverlayPushNotificationViewController{
                 let richTitleLabel = UILabel()
                 if let viewController = viewController, let title = title {
                     richTitleLabel.attributedText = viewController.getHtmlParsedString(title, isTitle: true, bckColor: colorHex)
-                    richTitleLabel.textAlignment = viewController.naturalTextAligmentForText(richTitleLabel.text)
+                    richTitleLabel.textAlignment = viewController.naturalTextAlignmentForText(richTitleLabel.text)
                 }
 
                 let richSubLabel = UILabel()
                 if let viewController = viewController, let subtitle = subtitle {
                     richSubLabel.attributedText = viewController.getHtmlParsedString(subtitle, isTitle: true, bckColor: colorHex)
-                    richSubLabel.textAlignment = viewController.naturalTextAligmentForText(richSubLabel.text)
+                    richSubLabel.textAlignment = viewController.naturalTextAlignmentForText(richSubLabel.text)
                 }
 
                 let richBodyLabel = UILabel()
                 if let viewController = viewController, let message = message {
                     richBodyLabel.attributedText = viewController.getHtmlParsedString(message, isTitle: false, bckColor: colorHex)
-                    richBodyLabel.textAlignment = viewController.naturalTextAligmentForText(richBodyLabel.text)
+                    richBodyLabel.textAlignment = viewController.naturalTextAlignmentForText(richBodyLabel.text, forDescription: true)
                 }
                 richBodyLabel.numberOfLines = 0
 
