@@ -365,7 +365,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         guard let firstChar = inputString.first else {
             return false
         }
-        let languageCharacterSet = CharacterSet(charactersIn: "\u{05D0}-\u{05EA}\u{0600}-\u{0645}")
+        let languageCharacterSet = CharacterSet(charactersIn: "\u{05D0}-\u{05EA}\u{0600}-\u{0645}\u{0646}-\u{06FF}")
         return languageCharacterSet.contains(firstChar.unicodeScalars.first!)
     }
 }
