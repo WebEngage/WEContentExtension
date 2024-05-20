@@ -93,8 +93,7 @@ extension WEXOverlayPushNotificationViewController{
 
                 let richBodyLabel = UILabel()
                 if let viewController = viewController, let message = message {
-                    richBodyLabel.attributedText = viewController.getHtmlParsedString(message, isTitle: false, bckColor: colorHex)
-                    richBodyLabel.textAlignment = viewController.naturalTextAlignmentForText(richBodyLabel.text, forDescription: true)
+                    richBodyLabel.attributedText = WEXCoreUtils.getAttributedString(message: message, colorHex: colorHex, viewController: self.viewController)
                 }
                 richBodyLabel.numberOfLines = 0
 

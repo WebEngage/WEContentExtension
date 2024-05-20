@@ -12,6 +12,26 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     var isRendering: Bool = false
     var isDarkMode: Bool = false
     
+    let rtlCharacterSet: CharacterSet = {
+        var characterSet = CharacterSet()
+        
+        // Add Hebrew characters to the character set
+        for scalarValue in 0x05D0...0x05EA {
+            if let unicodeScalar = UnicodeScalar(scalarValue) {
+                characterSet.insert(unicodeScalar)
+            }
+        }
+        
+        // Add Arabic characters to the character set
+        for scalarValue in 0x0600...0x06FF {
+            if let unicodeScalar = UnicodeScalar(scalarValue) {
+                characterSet.insert(unicodeScalar)
+            }
+        }
+        
+        return characterSet
+    }()
+    
     open override func loadView() {
         self.view = UIView()
     }
@@ -229,7 +249,10 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
                 return .left
             }
         } else {
-            let chars = differentiateCharsAndEmojis(inputString: text)
+            let (chars, emoji) = differentiateCharsAndEmojis(inputString: text)
+            if emoji.count > 0 {
+                return .left
+            }
             if let firstChar = chars.first {
                 if isFirstCharRTL(inputString: String(firstChar)){
                     return .right
@@ -350,22 +373,33 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         }
         return false
     }
-    
-    func differentiateCharsAndEmojis(inputString: String) -> [Character] {
+    func isKeycapEmoji(_ scalar: Character) -> Bool {
+        return !scalar.isTraditionalEmoji
+    }
+    func differentiateCharsAndEmojis(inputString: String) -> (chars: [Character], emojis: [Character]){
         var chars: [Character] = []
+        var emojis: [Character] = []
         for char in inputString {
+            if isEmoji(character: char) {
+                if isKeycapEmoji(char){
+                    return  (chars, emojis)
+                }
+            }
             if !isEmoji(character: char) {
-                chars.append(char)
+                return  ([char], emojis)
             }
         }
-        return (chars)
+        return  (chars, emojis)
     }
-    
+
     func isFirstCharRTL(inputString: String) -> Bool {
         guard let firstChar = inputString.first else {
             return false
         }
-        let languageCharacterSet = CharacterSet(charactersIn: "\u{05D0}-\u{05EA}\u{0600}-\u{0645}\u{0646}-\u{06FF}")
-        return languageCharacterSet.contains(firstChar.unicodeScalars.first!)
+        if let firstUnicodeScalar = firstChar.unicodeScalars.first {
+            return rtlCharacterSet.contains(firstUnicodeScalar)
+        }
+        
+        return false
     }
 }

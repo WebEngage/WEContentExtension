@@ -26,7 +26,7 @@ extension WEXTextPushNotificationViewController {
                 var titlePresent = title != ""
                 var subTitlePresent = subtitle != ""
                 var messagePresent = message != ""
-
+                
                 if !titlePresent {
                     titlePresent = notification?.request.content.title != ""
                 }
@@ -41,25 +41,21 @@ extension WEXTextPushNotificationViewController {
                     richTitleLabel.attributedText = viewController.getHtmlParsedString(title, isTitle: true, bckColor: colorHex)
                     richTitleLabel.textAlignment = viewController.naturalTextAlignmentForText(richTitleLabel.text)
                 }
-
+                
                 let richSubLabel = UILabel()
                 if let viewController = viewController, let subtitle = subtitle {
                     richSubLabel.attributedText = viewController.getHtmlParsedString(subtitle, isTitle: true, bckColor: colorHex)
                     richSubLabel.textAlignment = viewController.naturalTextAlignmentForText(richSubLabel.text)
                 }
-
+                
                 let richBodyLabel = UILabel()
-                if let viewController = viewController, let message = message {
-                    richBodyLabel.attributedText = viewController.getHtmlParsedString(message, isTitle: false, bckColor: colorHex)
-                    richBodyLabel.textAlignment = viewController.naturalTextAlignmentForText(richBodyLabel.text, forDescription: true)
-                }
+                richBodyLabel.attributedText = WEXCoreUtils.getAttributedString(message: message, colorHex: colorHex, viewController: self.viewController)
                 richBodyLabel.numberOfLines = 0
-
-
+                
                 richContentView.addSubview(richTitleLabel)
                 richContentView.addSubview(richSubLabel)
                 richContentView.addSubview(richBodyLabel)
-
+                
                 superViewWrapper.addSubview(richContentView)
                 setupConstraints()
             }

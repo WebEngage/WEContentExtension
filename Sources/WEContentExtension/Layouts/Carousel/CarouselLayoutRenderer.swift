@@ -142,12 +142,9 @@ extension WEXCarouselPushNotificationViewController{
                         }
                         
                         let richBodyLabel = UILabel()
-                        if let richMessage = richMessage {
-                            richBodyLabel.attributedText = self.viewController?.getHtmlParsedString(richMessage, isTitle: false, bckColor: colorHex ?? WEConstants.WHITECOLOR)
-                            if let alignment = self.viewController?.naturalTextAlignmentForText(richBodyLabel.text, forDescription: true){
-                                richBodyLabel.textAlignment = alignment
-                                richBodyLabel.numberOfLines = 0
-                            }
+                        if let richMessage = richMessage{
+                            richBodyLabel.attributedText = WEXCoreUtils.getAttributedString(message: richMessage, colorHex: colorHex ?? WEConstants.WHITECOLOR , viewController: self.viewController)
+                            richBodyLabel.numberOfLines = 0
                         }
                         
                         let notificationContentView = UIView()
