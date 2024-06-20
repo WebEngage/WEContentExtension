@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '12.0'
   s.frameworks = 'Foundation'
   s.weak_frameworks = 'UserNotifications', 'UserNotificationsUI'
-  
+  s.resource_bundles = { 'WEContentExtension' => 'Sources/WEContentExtension/Resources/*.{xcprivacy}' }
 end
