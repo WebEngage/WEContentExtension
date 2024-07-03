@@ -129,25 +129,22 @@ extension WEXCarouselPushNotificationViewController{
                         let richTitleLabel = UILabel()
                         if let richTitle = richTitle{
                             richTitleLabel.attributedText = self.viewController?.getHtmlParsedString(richTitle, isTitle: true, bckColor: colorHex ?? WEConstants.WHITECOLOR)
-                            if let alignment = self.viewController?.naturalTextAligmentForText(richTitleLabel.text){
+                            if let alignment = self.viewController?.naturalTextAlignmentForText(richTitleLabel.text){
                                 richTitleLabel.textAlignment = alignment
                             }
                         }
                         let richSubLabel = UILabel()
                         if let richSub = richSub {
                             richSubLabel.attributedText = self.viewController?.getHtmlParsedString(richSub, isTitle: true, bckColor: colorHex ?? WEConstants.WHITECOLOR)
-                            if let alignment = self.viewController?.naturalTextAligmentForText(richSubLabel.text){
+                            if let alignment = self.viewController?.naturalTextAlignmentForText(richSubLabel.text){
                                 richSubLabel.textAlignment = alignment
                             }
                         }
                         
                         let richBodyLabel = UILabel()
-                        if let richMessage = richMessage {
-                            richBodyLabel.attributedText = self.viewController?.getHtmlParsedString(richMessage, isTitle: false, bckColor: colorHex ?? WEConstants.WHITECOLOR)
-                            if let alignment = self.viewController?.naturalTextAligmentForText( richBodyLabel.text){
-                                richBodyLabel.textAlignment = alignment
-                                richBodyLabel.numberOfLines = 0
-                            }
+                        if let richMessage = richMessage{
+                            richBodyLabel.attributedText = WEXCoreUtils.getAttributedString(message: richMessage, colorHex: colorHex ?? WEConstants.WHITECOLOR , viewController: self.viewController)
+                            richBodyLabel.numberOfLines = 0
                         }
                         
                         let notificationContentView = UIView()
