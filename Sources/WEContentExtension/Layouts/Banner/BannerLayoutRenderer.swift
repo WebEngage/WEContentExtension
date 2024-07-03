@@ -93,7 +93,7 @@ extension WEXBannerPushNotificationViewController{
 
                 let richBodyLabel = UILabel()
                 if let viewController = viewController, let message = message {
-                    richBodyLabel.attributedText = WEXCoreUtils.getAttributedString(message: message, colorHex: colorHex, viewController: self.viewController)
+                    richBodyLabel.attributedText = WEXCoreUtils.getAttributedString(message: message, colorHex: colorHex, viewController: viewController)
                 }
                 richBodyLabel.numberOfLines = 0
 

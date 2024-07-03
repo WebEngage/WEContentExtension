@@ -242,7 +242,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         if !forDescription {
             let preferredLanguages = Locale.preferredLanguages
             let deviceLanguage = preferredLanguages.first
-            let primaryLanguage = Locale.components(fromIdentifier: deviceLanguage ?? "")[NSLocale.Key.languageCode.rawValue] as? String ?? ""
+            let primaryLanguage = Locale.components(fromIdentifier: deviceLanguage ?? "")[NSLocale.Key.languageCode.rawValue] ?? ""
             if rightToLeftLanguages.contains(primaryLanguage) {
                 return .right
             } else {
@@ -278,7 +278,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
             inputString = "<strong>\(textString)</strong>"
         }
         
-        guard let data = inputString.data(using: .unicode) else {
+        guard (inputString.data(using: .unicode) != nil) else {
             return nil
         }
         
@@ -377,8 +377,8 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         return !scalar.isTraditionalEmoji
     }
     func differentiateCharsAndEmojis(inputString: String) -> (chars: [Character], emojis: [Character]){
-        var chars: [Character] = []
-        var emojis: [Character] = []
+        let chars: [Character] = []
+        let emojis: [Character] = []
         for char in inputString {
             if isEmoji(character: char) {
                 if isKeycapEmoji(char){
