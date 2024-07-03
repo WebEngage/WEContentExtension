@@ -58,22 +58,22 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
   - #### **_Screenshots_**
 
     <p align="center">
-      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/1.png" alt="Screenshot 1" width="1000">
+      <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/1.png" alt="Screenshot 1" width="1000">
     </p>
     <h5 align="center">Screenshot 1</h5>
 
     <p align="center">
-      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/2.png" alt="Screenshot 2" width="1000">
+      <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/2.png" alt="Screenshot 2" width="1000">
     </p>
     <h5 align="center">Screenshot 2</h5>
 
     <p align="center">
-      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/3.png" alt="Screenshot 3" width="500">
+      <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/3.png" alt="Screenshot 3" width="500">
     </p>
     <h5 align="center">Screenshot 3</h5>
 
     <p align="center">
-      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/4.png" alt="Screenshot 4" width="250">
+      <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/4.png" alt="Screenshot 4" width="250">
     </p>
     <h5 align="center">Screenshot 4</h5>
 
@@ -96,7 +96,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
     1. Navigate to `File` > `Swift Packages` > `Add Package Dependency...`.
     <br><br>
       <p align="center">
-        <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/SPM-1.png" alt="Screenshot 1 (SPM)" width="1000">
+        <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/SPM-1.png" alt="Screenshot 1 (SPM)" width="1000">
       </p>
       <h5 align="center">Screenshot 1 (SPM)</h5>
 
@@ -109,7 +109,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
     5. Click `Next`.
     <br><br>
       <p align="center">
-        <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/SPM-2.png" alt="Screenshot 1 (SPM)" width="1000">
+        <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/SPM-2.png" alt="Screenshot 1 (SPM)" width="1000">
       </p>
       <h5 align="center">Screenshot 2 (SPM)</h5>
 
@@ -118,7 +118,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
     7. Click `Finish`.
     <br><br>
       <p align="center">
-        <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/SPM-3.png" alt="Screenshot 1 (SPM)" width="1000">
+        <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/SPM-3.png" alt="Screenshot 1 (SPM)" width="1000">
       </p>
       <h5 align="center">Screenshot 3 (SPM)</h5>
 
@@ -308,7 +308,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
   - `Info.plist` shoul look like below screenshot
     <br><br>
     <p align="center">
-      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/info.png" alt="InfoPlist" width="1000">
+      <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/info.png" alt="InfoPlist" width="1000">
     </p>
     <h5 align="center">info.plist</h5>
 
@@ -325,17 +325,17 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
   - #### **_Screenshots_**
     <br><br>
       <p align="center">
-      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/appGroup/1.png" alt="Screenshot 1" width="1000">
+      <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/appGroup/1.png" alt="Screenshot 1" width="1000">
       </p>
       <h5 align="center">Screenshot 1</h5>
       <br><br>
       <p align="center">
-      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/appGroup/2.png" alt="Screenshot 1" width="1000">
+      <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/appGroup/2.png" alt="Screenshot 1" width="1000">
       </p>
       <h5 align="center">Screenshot 2</h5>
       <br><br>
       <p align="center">
-      <img src="https://github.com/WebEngage/WEContentExtension/blob/release/1.0.0/InetgrationScreenshots/appGroup/3.png" alt="Screenshot 1" width="1000">
+      <img src="https://raw.githubusercontent.com/WebEngage/WEContentExtension/master/InetgrationScreenshots/appGroup/3.png" alt="Screenshot 1" width="1000">
       </p>
       <h5 align="center">Screenshot 3</h5>
 
@@ -369,7 +369,7 @@ WEContentExtension is extension SDK on WebEngage to support Rich push layouts in
       - #### For Objective-C Users:
         - Open the NotificationViewController.h file.
         - Remove the import statement `#import <WebEngageAppEx/WEXRichPushNotificationViewController.h>`.
-        - Replace `WEXRichPushNotificationViewController` with `UNNotificationContentExtension`.
+        - Replace `WEXRichPushNotificationViewController` with `UIViewController`.
         - Open the `NotificationViewController.m` file.
         - Replace the code as given in Step [Objective C](#objective-c)
 
