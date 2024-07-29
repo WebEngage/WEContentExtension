@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'WEContentExtension'
-  s.version          = '1.1.0'
+  s.version          = '1.1.1'
   s.summary          = 'Extension Target SDK for adding WebEngage Rich Push Notifications support'
 
   s.description      = <<-DESC

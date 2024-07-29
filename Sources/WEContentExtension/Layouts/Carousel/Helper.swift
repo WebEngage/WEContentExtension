@@ -195,17 +195,12 @@ extension WEXCarouselPushNotificationViewController{
     }
     
     func setCTAForIndex(_ index: Int) {
-        if let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any],
-           let items = expandableDetails[WEConstants.ITEMS] as? [String: Any] {
-            let keys = Array(items.keys)
-            if index < keys.count, let viewController = self.viewController {
-                let key = keys[index]
-                if let item = items[key] as? [String: Any] {
-                    let ctaId = item["id"] as? String ?? ""
-                    let actionLink = item[WEConstants.ACTION_LINK] as? String ?? ""
-                    viewController.setCTAWithId(ctaId, andLink: actionLink)
-                }
-            }
+        let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]
+        let items = expandableDetails?[WEConstants.ITEMS] as? [Any]
+        if let currentItem = items?[index] as? [String: Any] {
+            let ctaId = currentItem["id"] as? String ?? ""
+            let actionLink = currentItem[WEConstants.ACTION_LINK] as? String ?? ""
+            self.viewController?.setCTAWithId(ctaId, andLink: actionLink)
         }
     }
 }
