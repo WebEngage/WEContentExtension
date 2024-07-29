@@ -143,27 +143,34 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     
     // Returns an activity dictionary for the current notification.
     func getActivityDictionaryForCurrentNotification() -> NSMutableDictionary {
-        guard let userInfo = notification?.request.content.userInfo as? [String: Any],
-              let expId = userInfo[WEConstants.EXPERIMENT_ID] as? String,
-              let notifId = userInfo[WEConstants.NOTIFICATION_ID] as? String else {
-            return NSMutableDictionary()
-        }
-        
-        let finalNotifId = "\(expId)|\(notifId)"
-        let expandableDetails = userInfo[WEConstants.EXPANDABLEDETAILS]
-        let customData = userInfo[WEConstants.CUSTOM_DATA] as? [Any]
-        
-        let dictionary = (richPushDefaults?.dictionary(forKey: finalNotifId) as? NSMutableDictionary) ?? NSMutableDictionary()
-        if dictionary.count == 0 {
-            dictionary[WEConstants.EXPERIMENT_ID] = expId
-            dictionary[WEConstants.NOTIFICATION_ID] = notifId
-            dictionary[WEConstants.EXPANDABLEDETAILS] = expandableDetails
-            if let customData = customData {
-                dictionary[WEConstants.CUSTOM_DATA] = customData
+          
+            guard let userInfo = notification?.request.content.userInfo as? [String: Any],
+                  let expId = userInfo[WEConstants.EXPERIMENT_ID] as? String,
+                  let notifId = userInfo[WEConstants.NOTIFICATION_ID] as? String else {
+                return NSMutableDictionary()
             }
+            
+            let finalNotifId = "\(expId)|\(notifId)"
+            let expandableDetails = userInfo[WEConstants.EXPANDABLEDETAILS]
+            let customData = userInfo[WEConstants.CUSTOM_DATA] as? [Any]
+            
+            var dictionary: NSMutableDictionary
+                if let storedDictionary = richPushDefaults?.dictionary(forKey: finalNotifId) {
+                    dictionary = NSMutableDictionary(dictionary: storedDictionary)
+                } else {
+                    dictionary = NSMutableDictionary()
+                }
+            
+            if dictionary.count == 0 {
+                dictionary[WEConstants.EXPERIMENT_ID] = expId
+                dictionary[WEConstants.NOTIFICATION_ID] = notifId
+                dictionary[WEConstants.EXPANDABLEDETAILS] = expandableDetails
+                if let customData = customData {
+                    dictionary[WEConstants.CUSTOM_DATA] = customData
+                }
+            }
+            return dictionary
         }
-        return dictionary
-    }
     
     /// - Parameters:
     ///   - object: The value to be set for the specified key in the activity dictionary.
