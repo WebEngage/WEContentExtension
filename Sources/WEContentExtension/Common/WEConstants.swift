@@ -13,7 +13,7 @@ struct WEConstants{
         static let BIG_PICTURE = "BIG_PICTURE"
         static let BIG_TEXT = "BIG_TEXT"
         static let OVERLAY = "OVERLAY"
-        static let BLACKCOLOR = "bckColor"
+        static let BACKCOLOR = "bckColor"
         static let CAROUSEL = "CAROUSEL_V1"
         static let COLLAPSED = "collapsed"
         static let CONTENT_PADDING: CGFloat = 10.0
