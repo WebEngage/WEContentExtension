@@ -14,36 +14,22 @@ struct WEXCoreUtils {
         guard let message = message else {
             return nil
         }
-
         guard let attributedString = viewController?.getHtmlParsedString(message, isTitle: false, bckColor: colorHex) else {
             return nil
         }
-
+        let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
         let rawString = attributedString.string
-        let lines = rawString.components(separatedBy: "\n")
-        let finalAttributedString = NSMutableAttributedString()
+        let paragraphRanges = rawString.paragraphRanges()
 
-        for line in lines {
-            if !line.isEmpty {
-                guard let alignment = viewController?.naturalTextAlignmentForText(line, forDescription: true) else {
-                    continue
-                }
-
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.alignment = alignment
-
-                let attributes: [NSAttributedString.Key: Any] = [
-                    .paragraphStyle: paragraphStyle
-                ]
-
-                let attributedLine = NSAttributedString(string: line, attributes: attributes)
-                finalAttributedString.append(attributedLine)
-                if line != lines.last {
-                    finalAttributedString.append(NSAttributedString(string: "\n"))
-                }
+        for range in paragraphRanges {
+            let paragraphText = (rawString as NSString).substring(with: range)
+            guard let alignment = viewController?.naturalTextAlignmentForText(paragraphText, forDescription: true) else {
+                continue
             }
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = alignment
+            finalAttributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: range)
         }
-
         return finalAttributedString
     }
 
@@ -113,5 +99,24 @@ extension Character {
                         .union(CharacterSet(charactersIn: "\u{2700}"..."\u{27BF}")) // Dingbats
                         .union(CharacterSet(charactersIn: "\u{1F900}"..."\u{1F9FF}")) // Supplemental Symbols and Pictographs
         return unicodeScalars.count == 1 && emojiRange.contains(unicodeScalars.first!)
+    }
+}
+
+extension String {
+    func paragraphRanges() -> [NSRange] {
+        let nsString = self as NSString
+        var ranges: [NSRange] = []
+        var paragraphStart = 0
+        var paragraphEnd = 0
+        var contentsEnd = 0
+        
+        let length = nsString.length
+        while paragraphStart < length {
+            nsString.getParagraphStart(&paragraphStart, end: &paragraphEnd, contentsEnd: &contentsEnd, for: NSMakeRange(paragraphStart, 0))
+            ranges.append(NSMakeRange(paragraphStart, contentsEnd - paragraphStart))
+            paragraphStart = paragraphEnd
+        }
+        
+        return ranges
     }
 }
