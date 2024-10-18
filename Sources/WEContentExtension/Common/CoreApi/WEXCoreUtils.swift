@@ -69,13 +69,18 @@ struct WEXCoreUtils {
             let bundleIdentifier = bundle.object(forInfoDictionaryKey: WEConstants.CFBUNDLEIDENTIFIER) as? String
             appGroup = "\(WEConstants.GROUP).\(bundleIdentifier ?? "").\(WEConstants.WENOTIFICATIONGROUP)"
         }
+        
+        
+        if let appGroupUrl = appGroup, let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupUrl) {
+            print("WebEngage App Group configured in Content Extension")
+        } else {
+            ALog("WebEngage App Group not configured in Content Extension")
+        }
 
         if let defaults = UserDefaults(suiteName: appGroup) {
             return defaults
-        } else {
-            print("Shared User Defaults could not be initialized. Ensure Shared App Groups have been enabled on Main App & Notification Service Extension Targets.")
-            fatalError("Shared User Defaults initialization failed.")
         }
+        return nil
     }
     
     // Checks if a given string contains HTML tags using regular expressions.
@@ -89,6 +94,9 @@ struct WEXCoreUtils {
                 sharedDefaults.setValue(WEConstants.WEX_CONTENT_EXTENSION_VERSION, forKey: WEConstants.WEX_CONTENT_EXTENSION_VERSION_STRING)
                 sharedDefaults.synchronize()
         }
+    }
+    static func ALog(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+        NSLog("%@ [Line %d] ERROR: %@", (function as NSString).lastPathComponent, line, message)
     }
 }
 
