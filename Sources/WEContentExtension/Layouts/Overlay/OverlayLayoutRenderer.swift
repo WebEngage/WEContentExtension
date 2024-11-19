@@ -56,7 +56,7 @@ extension WEXOverlayPushNotificationViewController{
     /// Sets up the container for rich content labels based on the expandable details of the notification.
     func setupLabelsContainer() {
         if let superViewWrapper = view?.subviews.first,
-           let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
+           let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let colorHex = expandableDetails[WEConstants.BACKCOLOR] as? String{
             let richContentView = UIView()
             if #available(iOS 13.0, *) {
                 richContentView.backgroundColor = UIColor.clear
