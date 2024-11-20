@@ -57,7 +57,7 @@ struct WEXCoreUtils {
         }
         
         
-        if let appGroupUrl = appGroup, let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupUrl) {
+        if let appGroupUrl = appGroup, let _ = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupUrl) {
             print("WebEngage App Group configured in Content Extension")
         } else {
             ALog("WebEngage App Group not configured in Content Extension")
