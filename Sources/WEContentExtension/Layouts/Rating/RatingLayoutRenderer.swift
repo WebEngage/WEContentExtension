@@ -158,7 +158,7 @@ extension WEXRatingPushNotificationViewController{
             richMessage = self.notification?.request.content.body
         }
 
-        let colorHex = expandableDetails?[WEConstants.BLACKCOLOR] as? String
+        let colorHex = expandableDetails?[WEConstants.BACKCOLOR] as? String
 
         // Add a notification content view for displaying title and body.
         let richContentView = UIView()
