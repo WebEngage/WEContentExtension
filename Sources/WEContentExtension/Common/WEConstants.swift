@@ -13,7 +13,7 @@ struct WEConstants{
         static let BIG_PICTURE = "BIG_PICTURE"
         static let BIG_TEXT = "BIG_TEXT"
         static let OVERLAY = "OVERLAY"
-        static let BLACKCOLOR = "bckColor"
+        static let BACKCOLOR = "bckColor"
         static let CAROUSEL = "CAROUSEL_V1"
         static let COLLAPSED = "collapsed"
         static let CONTENT_PADDING: CGFloat = 10.0
@@ -44,7 +44,7 @@ struct WEConstants{
         static let WENOTIFICATIONGROUP = "WEGNotificationGroup"
         static let WEBENGAGE = "webengage"
         static let WEX_APP_GROUP = "WEX_APP_GROUP"
-        static let WEX_CONTENT_EXTENSION_VERSION = "1.1.1"
+        static let WEX_CONTENT_EXTENSION_VERSION = "1.1.2"
         static let WEX_CONTENT_EXTENSION_VERSION_STRING = "WEContentExtension_version"
         static let WHITECOLOR = "#FFFFFF"
 }
