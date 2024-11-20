@@ -236,7 +236,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
             viewHeight = viewWidth * WEConstants.LANDSCAPE_ASPECT
         }
         let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]
-        let colorHex = expandableDetails?[WEConstants.BLACKCOLOR] as? String ?? ""
+        let colorHex = expandableDetails?[WEConstants.BACKCOLOR] as? String ?? ""
         if #available(iOS 13.0, *) {
             viewToReturn.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXGreyColor())
         }

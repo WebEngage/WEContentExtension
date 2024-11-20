@@ -29,7 +29,7 @@ extension WEXCarouselPushNotificationViewController{
             var superViewHeight = viewHeight + 2 * verticalMargins
             
             if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String : Any]{
-                if let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
+                if let colorHex = expandableDetails[WEConstants.BACKCOLOR] as? String{
                     if #available(iOS 13.0, *) {
                         self.view?.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXWhiteColor())
                     }
@@ -85,7 +85,7 @@ extension WEXCarouselPushNotificationViewController{
                 }
                 
                 let bottomSeparator = UIView(frame: CGRect(x: 0.0, y: CGFloat(superViewHeight) - 0.5, width: superViewWidth, height: 0.5))
-                if let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String{
+                if let colorHex = expandableDetails[WEConstants.BACKCOLOR] as? String{
                     if #available(iOS 13.0, *) {
                         bottomSeparator.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXGreyColor())
                     }}
@@ -124,7 +124,7 @@ extension WEXCarouselPushNotificationViewController{
                             richMessage = self.notification?.request.content.body
                         }
                         
-                        let colorHex = expandableDetails[WEConstants.BLACKCOLOR] as? String
+                        let colorHex = expandableDetails[WEConstants.BACKCOLOR] as? String
                         
                         let richTitleLabel = UILabel()
                         if let richTitle = richTitle{
