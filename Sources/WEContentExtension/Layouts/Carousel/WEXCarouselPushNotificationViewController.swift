@@ -80,15 +80,15 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                             firstImageAdded = true
                         }
                     }
-                    
+                    var listOfPositionsToDownload: [Int] = []
                     for i in (firstImageAdded ? 1 : 0)..<items.count {
                         wasLoaded.append(false)
                         
-                        if i < downloadedCount {
+                        if i <= downloadedCount {
                             if #available(iOS 10.0, *) {
                                 if let attachmentValue = notification.request.content.attachments.first(where: { $0.identifier == "\(i)" }) {
                                     if attachmentValue.url.startAccessingSecurityScopedResource() {
-                                        if let imageData = try? Data(contentsOf: attachmentValue.url), let image = UIImage.animatedImageWithAnimatedGIF(data: imageData) {
+                                        if let imageData = try? Data(contentsOf: attachmentValue.url), let image = loadImageFromData(data: imageData) {
                                             images.append(image)
                                             wasLoaded[i] = true
                                             if i == 0 {
@@ -99,21 +99,26 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                                             attachmentValue.url.stopAccessingSecurityScopedResource()
                                         } else {
                                             images.append(getErrorImage()!)
+                                            listOfPositionsToDownload.append(i)
+                                            wasLoaded[i] = true
                                         }
                                     }
+                                }else{
+                                    images.append(getErrorImage()!)
                                 }
                             } else {
                                 print("Expected to be running iOS version 10 or above")
                             }
                         } else {
                             images.append(getLoadingImage()!)
+                            listOfPositionsToDownload.append(i)
                         }
                     }
                     initialiseCarouselForNotification(notification)
                    
                     
-                    if downloadedCount < items.count {
-                        downloadRemaining(from: downloadedCount)
+                    if listOfPositionsToDownload.count > 0 {
+                        downloadRemaining(forPositions: listOfPositionsToDownload)
                     }
                 }
             }
@@ -319,5 +324,38 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
         let x = currentViewX + Float(frameLocation.rawValue) * interViewMargins + Float(frameLocation.rawValue) * viewWidth
         return  CGRect(x: CGFloat(x), y: CGFloat(currentViewY), width: CGFloat(viewWidth), height: CGFloat(viewHeight))
     }
+    
+    
+    func checkImageType(data: Data) -> String? {
+        let gifMagicNumbers: [UInt8] = [0x47, 0x49, 0x46] // "GIF" in ASCII
+        let jpgMagicNumbers: [UInt8] = [0xFF, 0xD8, 0xFF] // JPEG header
+        let pngMagicNumbers: [UInt8] = [0x89, 0x50, 0x4E, 0x47] // PNG header
+
+        if data.starts(with: gifMagicNumbers) {
+            return "GIF"
+        } else if data.starts(with: jpgMagicNumbers) {
+            return "JPEG"
+        } else if data.starts(with: pngMagicNumbers) {
+            return "PNG"
+        }
+        return nil // Unknown or unsupported format
+    }
+
+    func loadImageFromData(data: Data) -> UIImage? {
+        guard let type = checkImageType(data: data) else {
+                print("Unsupported or unknown image type")
+                return nil
+            }
+        
+        switch type {
+            case "GIF":
+            return UIImage.animatedImageWithAnimatedGIF(data: data)
+            case "JPEG", "PNG":
+                return UIImage(data: data)
+            default:
+                return nil
+            }
+    }
+
   
 }
