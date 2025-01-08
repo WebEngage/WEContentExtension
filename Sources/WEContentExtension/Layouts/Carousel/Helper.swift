@@ -31,6 +31,37 @@ extension WEXCarouselPushNotificationViewController{
         }
     }
     
+    func downloadRemaining(forPositions positions: [Int]) {
+        for i in positions {
+            DispatchQueue.global(qos: .userInitiated).async {
+                if let carouselItem = self.carouselItems[i] as? [String: Any],
+                   let imageURL = carouselItem[WEConstants.IMAGE] as? String,
+                   let imageUrl = URL(string: imageURL) {
+                    
+                    // Asynchronously download the image
+                    if let imageData = try? Data(contentsOf: imageUrl),
+                       let image = UIImage(data: imageData) {
+                        DispatchQueue.main.async {
+                            self.images[i] = image
+                            self.wasLoaded[i] = true
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            self.images[i] = self.getErrorImage()!
+                            self.wasLoaded[i] = false
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.images[i] = self.getErrorImage()!
+                        self.wasLoaded[i] = false
+                    }
+                }
+            }
+        }
+    }
+
+    
     func getActivityDictionaryForCurrentNotification() -> [String: Any]? {
         if let viewController = self.viewController {
             return viewController.getActivityDictionaryForCurrentNotification() as? [String : Any]
