@@ -17,12 +17,15 @@ class WEXTextPushNotificationViewController: WEXRichPushLayout {
         if let source = notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             self.notification = notification
             initialiseViewHierarchy()
+            WEXLogProcessor.logReceivedNotification(loglevel: WEGLogLevel.info, message: "Text View Rendered", notification: notification.request.content)
         }
     }
 
     override func didReceiveNotificationResponse(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
         if let source = response.notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE{
-            completion(.dismissAndForwardAction)
+            WEXDebugger.flushEvents { _, _ in
+                completion(.dismissAndForwardAction)
+            }
         }
     }
     

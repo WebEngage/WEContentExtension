@@ -45,6 +45,26 @@ struct WEConstants{
         static let WEBENGAGE = "webengage"
         static let WEX_APP_GROUP = "WEX_APP_GROUP"
         static let WEX_CONTENT_EXTENSION_VERSION = "1.1.3"
+        static let WE_CONTENT_EXTENSION = "WEContentExtension"
         static let WEX_CONTENT_EXTENSION_VERSION_STRING = "WEContentExtension_version"
         static let WHITECOLOR = "#FFFFFF"
+        static let KEY_DEBUGGER_EVENT_SYNC_URL = "debugger_event_sync_url"
+        static let WEX_LICENSE_CODE = "license_code"
+        static let WEX_INTERFACE_ID = "interface_id"
+        static let WEX_SDK_VERSION = "sdk_version"
+        static let WEX_APP_ID = "app_id"
+}
+
+@objc public enum WEGLogLevel: Int {
+    case debug, info, warning, error, critical
+    
+    var description: String {
+        switch self {
+        case .debug: return "debug"
+        case .info: return "info"
+        case .warning: return "warning"
+        case .error: return "error"
+        case .critical: return "critical"
+        }
+    }
 }

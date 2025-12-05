@@ -65,6 +65,7 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
     override func didReceiveNotification(_ notification: UNNotification) {
         if let userInfo = notification.request.content.userInfo as? [String: Any],
            let source = userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
+            WEXLogProcessor.logReceivedNotification(loglevel: WEGLogLevel.info, message: "Rating View Rendered", notification: notification.request.content)
             self.notification = notification
             initialiseViewHierarchy()
             
@@ -115,13 +116,20 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
                         viewController?.addSystemEvent(name: WEX_RATING_SUBMITTED_EVENT_NAME,
                                                       systemData: systemData,
                                                       applicationData: ["we_wk_rating": selectedCount])
+                        
+                        WEXDebugger.flushEvents { _, _ in
+                            completion(completionOption)
+                        }
+                        return
                     }
                 } else {
                     // Here UI may be updated to prompt choosing a rating value.
                 }
             }
             
-            completion(completionOption)
+            if completionOption != .dismissAndForwardAction {
+                completion(completionOption)
+            }
         }
     }
 }

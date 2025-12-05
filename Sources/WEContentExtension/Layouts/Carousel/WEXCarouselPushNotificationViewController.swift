@@ -52,6 +52,8 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
     
     override func didReceiveNotification(_ notification: UNNotification) {
         if let source = notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
+            
+            WEXLogProcessor.logReceivedNotification(loglevel: WEGLogLevel.info, message: "Carousel View Rendered", notification: notification.request.content)
             isRendering = true
             self.notification = notification
             current = 0
@@ -208,7 +210,9 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
             if dismissed {
                 writeObject(NSNumber(value: true), withKey: "closed")
                 if #available(iOS 10.0, *) {
-                    completion(.dismiss)
+                    WEXDebugger.flushEvents { _, _ in
+                        completion(.dismiss)
+                    }
                 } else {
                     print("Expected to be running iOS version 10 or above")
                 }

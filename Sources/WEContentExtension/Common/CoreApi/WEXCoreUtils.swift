@@ -84,6 +84,36 @@ struct WEXCoreUtils {
     static func ALog(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
         NSLog("%@ [Line %d] ERROR: %@", (function as NSString).lastPathComponent, line, message)
     }
+    
+    static func isDebuggerEnabled() -> Bool {
+        WEXCoreUtils.getSharedUserDefaults()?
+            .string(forKey: WEConstants.KEY_DEBUGGER_EVENT_SYNC_URL) != nil
+    }
+    /// Get the current time in a formatted string.
+    ///
+    /// - Returns: A formatted date and time string.
+    static func getCurrentFormattedTime() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "'~t'yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        formatter.locale = Locale(identifier: "en_GB")
+        return formatter.string(from: Date())
+    }
+    
+    /// Converts notification userInfo to [String: Any] dictionary
+    /// - Parameter notification: UNMutableNotificationContent or similar with userInfo property
+    /// - Returns: Dictionary with string keys and any values
+    static func convertUserInfoToDictionary(_ notification: Any?) -> [String: Any] {
+        guard let userInfo = (notification as? UNNotificationContent)?.userInfo else {
+            return [:]
+        }
+        return userInfo.reduce(into: [String: Any]()) { result, element in
+            if let key = element.key as? String {
+                result[key] = element.value
+            }
+        }
+    }
+    
 }
 
 

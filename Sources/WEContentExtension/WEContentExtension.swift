@@ -47,6 +47,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         updateActivity(object: true, forKey: WEConstants.COLLAPSED)
+        WEXDebugger.flushEvents()
         DispatchQueue.main.async {
             self.label?.removeFromSuperview()
             self.currentLayout = nil
@@ -82,6 +83,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     
     public func didReceive(_ notification: UNNotification) {
         if notification.request.content.userInfo[WEConstants.SOURCE] as? String == WEConstants.WEBENGAGE {
+            WEXLogProcessor.logReceivedNotification(loglevel: WEGLogLevel.info, message: "Notificaion Received by Content Extension", notification: notification.request.content)
             self.notification = notification
             isRendering = true
             updateDarkModeStatus()
@@ -105,6 +107,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
             if let expandableDetails = notification.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any], let style = expandableDetails[WEConstants.STYLE] as? String {
                 currentLayout = layoutForStyle(style)
                 currentLayout?.didReceiveNotification(notification)
+                WEXDebugger.flushEvents()
             }
         }
     }
@@ -132,6 +135,7 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     public func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
         if let source = response.notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             self.currentLayout?.didReceiveNotificationResponse(response, completionHandler: completion)
+            WEXDebugger.flushEvents()
         }
     }
     

@@ -20,6 +20,8 @@ struct WEXAnalytics {
         let defaults = WEXCoreUtils.getSharedUserDefaults()
         defaults?.set(["event_name": eventName, "event_value": eventValue as Any, "is_system": val], forKey: eventKey)
         defaults?.synchronize()
+        WEXDebugger.flushEvents()
+        WEXLogProcessor.logtrackEvent(loglevel: WEGLogLevel.info, event: eventName, eventValue: eventValue)
     }
     
     // This static method is a wrapper for tracking events.
