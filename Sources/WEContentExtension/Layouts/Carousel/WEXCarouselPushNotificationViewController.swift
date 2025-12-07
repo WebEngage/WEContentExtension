@@ -77,6 +77,7 @@ class WEXCarouselPushNotificationViewController: WEXRichPushLayout {
                                 }
                             } else {
                                 images.append(getErrorImage()!)
+                                WEXLogProcessor.logImageDownloadingFailed(loglevel: WEGLogLevel.error, message: "Rendering default image as data was not valid", notification: notification.request.content)
                                 wasLoaded.append(false)
                             }
                             firstImageAdded = true
