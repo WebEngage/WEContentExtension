@@ -21,16 +21,13 @@ class WEXTilesPushNotificationViewController: WEXRichPushLayout {
                let items = expandableDetails[WEConstants.TILES_ITEMS] as? [[String: Any]], !items.isEmpty {
                 tileItems = items
                 initialiseViewHierarchy()
-                WEXLogProcessor.logReceivedNotification(loglevel: WEGLogLevel.info, message: "Tiles View Rendered", notification: notification.request.content)
             }
         }
     }
 
     override func didReceiveNotificationResponse(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
         if let source = response.notification.request.content.userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
-            WEXDebugger.flushEvents { _, _ in
-                completion(.dismissAndForwardAction)
-            }
+            completion(.dismissAndForwardAction)
         }
     }
 

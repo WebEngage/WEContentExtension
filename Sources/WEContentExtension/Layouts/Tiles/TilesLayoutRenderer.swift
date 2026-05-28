@@ -189,9 +189,7 @@ extension WEXTilesPushNotificationViewController {
                let image = UIImage.animatedImageWithAnimatedGIF(data: data) ?? UIImage(data: data) {
                 imageView.image = image
                 return
-            } else {
-                WEXLogProcessor.logImageDownloadingFailed(loglevel: WEGLogLevel.error, message: "Failed to load tile image from attachment", notification: notification?.request.content)
-            }
+            } 
         }
 
         // Fallback: download from URL
