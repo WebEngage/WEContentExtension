@@ -26,6 +26,7 @@ struct WEConstants{
         static let GROUP = "group"
         static let IMAGE = "image"
         static let ITEMS = "items"
+        static let TILES_ITEMS = "tiles"
         static let LANDSCAPE_ASPECT: Float = 0.5
         static let MODE = "mode"
         static let NOTIFICATION_ID = "notification_id"
@@ -37,6 +38,7 @@ struct WEConstants{
         static let RICHTITLE = "rt"
         static let SOURCE = "source"
         static let STYLE = "style"
+        static let TILES_STYLE = "TILES"
         static let SUBMIT_CTA = "submitCTA"
         static let SYSTEM = "system"
         static let SYSTEM_DATA_OVERRIDES = "system_data_overrides"
