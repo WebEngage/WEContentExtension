@@ -152,7 +152,7 @@ extension WEXTilesPushNotificationViewController {
                let attachment = attachments.first(where: { $0.identifier == "0" }),
                attachment.url.startAccessingSecurityScopedResource() {
                 if let data = try? Data(contentsOf: attachment.url),
-                   let image = UIImage.animatedImageWithAnimatedGIF(data: data) ?? UIImage(data: data) {
+                   let image = UIImage(data: data) {
                     bgImageView.image = image
                 }
                 attachment.url.stopAccessingSecurityScopedResource()
@@ -160,7 +160,7 @@ extension WEXTilesPushNotificationViewController {
                 DispatchQueue.global(qos: .userInitiated).async { [weak bgImageView] in
                     if let url = URL(string: bgImageURL),
                        let data = try? Data(contentsOf: url),
-                       let image = UIImage.animatedImageWithAnimatedGIF(data: data) ?? UIImage(data: data) {
+                       let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             bgImageView?.image = image
                         }
