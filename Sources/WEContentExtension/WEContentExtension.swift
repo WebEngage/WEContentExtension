@@ -2,6 +2,10 @@ import UserNotifications
 import UserNotificationsUI
 import UIKit
 
+protocol WEXRatingInputProvider {
+    func provideInputView() -> UIView?
+}
+
 @available(iOS 10.0, *)
 open class WEXRichPushNotificationViewController: UIViewController,UNNotificationContentExtension {
     
@@ -61,21 +65,9 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
         return false
     }
     
-    open override var inputAccessoryView: UIView? {
-        if let currentLayout = self.currentLayout, currentLayout.responds(to: #selector(getter: self.inputAccessoryView)) {
-            if let accessoryView = currentLayout.perform(#selector(getter: self.inputAccessoryView))?.takeUnretainedValue() as? UIView {
-                return accessoryView
-            }
-        }
-        return super.inputAccessoryView
-    }
-    
-    
     open override var inputView: UIView? {
-        if let currentLayout = self.currentLayout, currentLayout.responds(to: #selector(getter: self.inputView)) {
-            if let accessoryView = currentLayout.perform(#selector(getter: self.inputView))?.takeUnretainedValue() as? UIView {
-                return accessoryView
-            }
+        if let ratingLayout = self.currentLayout as? WEXRatingInputProvider {
+            return ratingLayout.provideInputView()
         }
         return super.inputView
     }

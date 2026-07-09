@@ -11,7 +11,8 @@ import UserNotificationsUI
 
 
 @available(iOS 10.0, *)
-class WEXRatingPushNotificationViewController: WEXRichPushLayout {
+class WEXRatingPushNotificationViewController: WEXRichPushLayout, WEXRatingInputProvider {
+    func provideInputView() -> UIView? { inputView() }
     var pickerView: UIPickerView?
     var notification: UNNotification?
     var pickerManager: StarPickerManager?
@@ -25,44 +26,58 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
     let WEX_RATING_SUBMITTED_EVENT_NAME = "push_notification_rating_submitted"
     let MAX_DESCRIPTION_LINE_COUNT = 3
     let TEXT_PADDING: CGFloat = 10
+    private var cachedInputView: UIView?
    
     @objc func canBecomeFirstResponder() -> Bool {
         return true
     }
 
-    @objc func inputAccessoryView() -> UIView? {
-        let frame = CGRect(x: 0, y: 0, width: CGFloat(self.view?.frame.size.width ?? 0), height: 50)
-        
-        let inputAccessoryView = UIView(frame: frame)
-        if #available(iOS 13.0, *) {
-            inputAccessoryView.backgroundColor = UIColor.WEXLightTextColor()
-        }
-        
-        let doneButton = UIButton(type: .system)
-        let attrTitle = NSAttributedString(string: "Done", attributes: [
-            NSAttributedString.Key.underlineStyle: [],
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20),
-            NSAttributedString.Key.foregroundColor: UIColor.colorFromHexString("0077cc", defaultColor: UIColor.blue)
-        ])
-        
-        doneButton.setAttributedTitle(attrTitle, for: .normal)
-        
-        inputAccessoryView.addSubview(doneButton)
-        
-        doneButton.translatesAutoresizingMaskIntoConstraints = false
-        doneButton.trailingAnchor.constraint(equalTo: inputAccessoryView.trailingAnchor, constant: -10.0).isActive = true
-        doneButton.topAnchor.constraint(equalTo: inputAccessoryView.topAnchor).isActive = true
-        doneButton.bottomAnchor.constraint(equalTo: inputAccessoryView.bottomAnchor).isActive = true
-        doneButton.addTarget(self, action: #selector(doneButtonClicked(_:)), for: .touchDown)
-        
-        return inputAccessoryView
-    }
-
     @objc func inputView() -> UIView? {
-        return self.pickerView
+        if let cached = cachedInputView {
+            return cached
+        }
+
+        let containerHeight: CGFloat = 216 + 50
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: containerHeight))
+        if #available(iOS 13.0, *) {
+            container.backgroundColor = .systemBackground
+        } else {
+            container.backgroundColor = .white
+        }
+
+        let picker = self.pickerView ?? UIPickerView()
+        picker.frame = CGRect(x: 0, y: 0, width: 320, height: 216)
+        picker.autoresizingMask = [.flexibleWidth]
+        container.addSubview(picker)
+
+        let doneBar = UIView(frame: CGRect(x: 0, y: 216, width: 320, height: 50))
+        doneBar.autoresizingMask = [.flexibleWidth]
+        if #available(iOS 13.0, *) {
+            doneBar.backgroundColor = .secondarySystemBackground
+        } else {
+            doneBar.backgroundColor = .groupTableViewBackground
+        }
+        container.addSubview(doneBar)
+
+        let doneButton = UIButton(type: .system)
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        if #available(iOS 13.0, *) {
+            doneButton.setTitleColor(.link, for: .normal)
+        } else {
+            doneButton.setTitleColor(.systemBlue, for: .normal)
+        }
+        doneButton.frame = CGRect(x: doneBar.bounds.width - 70, y: 0, width: 60, height: 50)
+        doneButton.autoresizingMask = [.flexibleLeftMargin]
+        doneButton.addTarget(self, action: #selector(doneButtonClicked(_:)), for: .touchUpInside)
+        doneBar.addSubview(doneButton)
+
+        cachedInputView = container
+        return container
     }
 
     override func didReceiveNotification(_ notification: UNNotification) {
+        cachedInputView = nil
         if let userInfo = notification.request.content.userInfo as? [String: Any],
            let source = userInfo[WEConstants.SOURCE] as? String, source == WEConstants.WEBENGAGE {
             self.notification = notification
@@ -125,7 +140,4 @@ class WEXRatingPushNotificationViewController: WEXRichPushLayout {
         }
     }
 }
-
-
-
 
