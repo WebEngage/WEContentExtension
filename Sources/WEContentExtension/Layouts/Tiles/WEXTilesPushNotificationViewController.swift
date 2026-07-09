@@ -21,6 +21,11 @@ class WEXTilesPushNotificationViewController: WEXRichPushLayout {
                let items = expandableDetails[WEConstants.TILES_ITEMS] as? [[String: Any]], !items.isEmpty {
                 tileItems = items
                 initialiseViewHierarchy()
+            } else if let viewController = viewController {
+                // Tiles layout requires at least 1 tile item; fallback to text layout
+                let fallback = WEXTextPushNotificationViewController(notificationViewController: viewController)
+                viewController.currentLayout = fallback
+                fallback.didReceiveNotification(notification)
             }
         }
     }
@@ -43,8 +48,8 @@ class WEXTilesPushNotificationViewController: WEXRichPushLayout {
         let actionLink = item[WEConstants.ACTION_LINK] as? String ?? ""
         viewController?.setCTAWithId(id, andLink: actionLink)
 
-        if let ctaAttributeValue = item["ctaAttributeValue"] as? String,
-           ctaAttributeValue == "Dismisses the notification",
+        if let ctaAttributeValue = item[WEConstants.CTA_ATTRIBUTE_VALUE] as? String,
+           ctaAttributeValue == WEConstants.CTA_DISMISS,
            let identifier = notification?.request.identifier {
             UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [identifier])
             viewController?.extensionContext?.dismissNotificationContentExtension()

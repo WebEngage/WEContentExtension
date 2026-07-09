@@ -156,16 +156,6 @@ extension WEXTilesPushNotificationViewController {
                     bgImageView.image = image
                 }
                 attachment.url.stopAccessingSecurityScopedResource()
-            } else {
-                DispatchQueue.global(qos: .userInitiated).async { [weak bgImageView] in
-                    if let url = URL(string: bgImageURL),
-                       let data = try? Data(contentsOf: url),
-                       let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            bgImageView?.image = image
-                        }
-                    }
-                }
             }
         } else if let colorHex = expandableDetails[WEConstants.BACKCOLOR] as? String, !colorHex.isEmpty {
             if #available(iOS 13.0, *) {
@@ -188,19 +178,6 @@ extension WEXTilesPushNotificationViewController {
             if let data = try? Data(contentsOf: attachment.url),
                let image = UIImage.animatedImageWithAnimatedGIF(data: data) ?? UIImage(data: data) {
                 imageView.image = image
-                return
-            } 
-        }
-
-        // Fallback: download from URL
-        if let urlString = item[WEConstants.IMAGE] as? String, let url = URL(string: urlString) {
-            DispatchQueue.global(qos: .userInitiated).async { [weak imageView] in
-                if let data = try? Data(contentsOf: url) {
-                    let image = UIImage.animatedImageWithAnimatedGIF(data: data) ?? UIImage(data: data)
-                    DispatchQueue.main.async {
-                        imageView?.image = image
-                    }
-                }
             }
         }
     }

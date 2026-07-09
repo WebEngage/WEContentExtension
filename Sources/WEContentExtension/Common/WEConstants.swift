@@ -49,4 +49,6 @@ struct WEConstants{
         static let WEX_CONTENT_EXTENSION_VERSION = "1.1.3"
         static let WEX_CONTENT_EXTENSION_VERSION_STRING = "WEContentExtension_version"
         static let WHITECOLOR = "#FFFFFF"
+        static let CTA_ATTRIBUTE_VALUE = "ctaAttributeValue"
+        static let CTA_DISMISS = "Dismisses the notification"
 }
