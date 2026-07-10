@@ -15,7 +15,7 @@ extension WEXTextPushNotificationViewController {
         if let superViewWrapper = view?.subviews.first,
            let expandableDetails = notification?.request.content.userInfo[WEConstants.EXPANDABLEDETAILS] as? [String: Any]{
             let richContentView = UIView()
-            let colorHex = (expandableDetails[WEConstants.EXPANDABLEDETAILS] as? String) ?? ""
+            let colorHex = (expandableDetails[WEConstants.BACKCOLOR] as? String) ?? ""
             if #available(iOS 13.0, *) {
                 richContentView.backgroundColor = UIColor.colorFromHexString(colorHex, defaultColor: UIColor.WEXWhiteColor())
             }

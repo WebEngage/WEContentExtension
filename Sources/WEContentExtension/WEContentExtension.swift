@@ -113,6 +113,9 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
     ///  - style: The style of the notification.
     ///  - Returns: An instance of WEXRichPushLayout corresponding to the specified style.
     func layoutForStyle(_ style: String) -> WEXRichPushLayout? {
+        if isFallback() {
+            return WEXTextPushNotificationViewController(notificationViewController: self)
+        }
         switch style {
         case WEConstants.CAROUSEL:
             return WEXCarouselPushNotificationViewController(notificationViewController: self)
@@ -124,8 +127,19 @@ open class WEXRichPushNotificationViewController: UIViewController,UNNotificatio
             return WEXTextPushNotificationViewController(notificationViewController: self)
         case WEConstants.OVERLAY :
             return WEXOverlayPushNotificationViewController(notificationViewController: self)
+        case WEConstants.TILES_STYLE:
+            return WEXTilesPushNotificationViewController(notificationViewController: self)
         default:
             return nil
+        }
+    }
+    
+    private func isFallback() -> Bool {
+        guard let customData = notification?.request.content.userInfo[WEConstants.CUSTOM_DATA] as? [[String: Any]] else {
+            return false
+        }
+        return customData.contains { item in
+            item["key"] as? String == "is_fallback" && item["value"] as? Bool == true
         }
     }
     

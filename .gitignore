@@ -5,3 +5,4 @@ Example/WEContentExtension.xcworkspace/xcuserdata
 Example/Pods
 Podfile.lock
 Example/WEContentExtension.xcworkspace/xcshareddata
+.build

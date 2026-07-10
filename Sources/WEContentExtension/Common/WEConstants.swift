@@ -26,6 +26,7 @@ struct WEConstants{
         static let GROUP = "group"
         static let IMAGE = "image"
         static let ITEMS = "items"
+        static let TILES_ITEMS = "tiles"
         static let LANDSCAPE_ASPECT: Float = 0.5
         static let MODE = "mode"
         static let NOTIFICATION_ID = "notification_id"
@@ -37,6 +38,7 @@ struct WEConstants{
         static let RICHTITLE = "rt"
         static let SOURCE = "source"
         static let STYLE = "style"
+        static let TILES_STYLE = "TILES"
         static let SUBMIT_CTA = "submitCTA"
         static let SYSTEM = "system"
         static let SYSTEM_DATA_OVERRIDES = "system_data_overrides"
@@ -44,7 +46,9 @@ struct WEConstants{
         static let WENOTIFICATIONGROUP = "WEGNotificationGroup"
         static let WEBENGAGE = "webengage"
         static let WEX_APP_GROUP = "WEX_APP_GROUP"
-        static let WEX_CONTENT_EXTENSION_VERSION = "1.1.3"
+        static let WEX_CONTENT_EXTENSION_VERSION = "1.2.0"
         static let WEX_CONTENT_EXTENSION_VERSION_STRING = "WEContentExtension_version"
         static let WHITECOLOR = "#FFFFFF"
+        static let CTA_ATTRIBUTE_VALUE = "ctaAttributeValue"
+        static let CTA_DISMISS = "Dismisses the notification"
 }
