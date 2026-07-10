@@ -78,7 +78,6 @@ struct WEXCoreUtils {
     static func setExtensionDefaults() {
         if let sharedDefaults = getSharedUserDefaults() {
                 sharedDefaults.setValue(WEConstants.WEX_CONTENT_EXTENSION_VERSION, forKey: WEConstants.WEX_CONTENT_EXTENSION_VERSION_STRING)
-                sharedDefaults.synchronize()
         }
     }
     static func ALog(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
